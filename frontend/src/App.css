@@ -10,11 +10,11 @@ body, html {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 500px; /* Increased width to fit everything */
+  width: 500px; /* Fixed width for desktop */
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 30px; /* Further increased gap between AudioRecorder and text box */
+  gap: 30px; /* Increased gap between AudioRecorder and text box */
 }
 
 /* Styles for the title input */
@@ -75,11 +75,40 @@ body, html {
 
 /* Style the audio element to take available space */
 audio {
-  flex-grow: 1; /* Allow the audio element to grow and take available space */
+  width: 100%; /* Take up full width of the container */
   max-width: 300px; /* Limit the maximum width of the audio element */
 }
 
 /* Make the AudioRecorder icon slightly bigger */
 .audio-recorder {
   transform: scale(1.8); /* Increased size of the icon */
+}
+
+/* Media queries for screens smaller than 510.667px */
+@media (max-width: 510.667px) {
+  .audio-recorder-container {
+    width: 90%; /* Reduce container width for smaller screens */
+    gap: 20px; /* Adjust gap for smaller screens */
+  }
+
+  audio {
+    max-width: 200px; /* Make the audio element smaller */
+  }
+
+  .title-input {
+    font-size: 12px; /* Smaller font size for smaller screens */
+  }
+
+  .recording-title {
+    font-size: 16px; /* Smaller font size for smaller screens */
+  }
+
+  .submit-button {
+    padding: 6px 12px; /* Smaller padding for smaller screens */
+    font-size: 12px; /* Smaller font size for smaller screens */
+  }
+
+  .audio-recorder {
+    transform: scale(1.5); /* Smaller icon for smaller screens */
+  }
 }
