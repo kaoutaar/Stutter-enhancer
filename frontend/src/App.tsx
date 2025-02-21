@@ -60,15 +60,31 @@ export default function App() {
             <div key={recording.id} className="audio-item-container">
               <h3 className="recording-title">{recording.title}</h3>
               <audio src={URL.createObjectURL(recording.blob)} controls />
-              <button
-                className="submit-button"
-                onClick={() => {
-                  removeRecording(recording.id); // Remove the recording
-                  handleSubmit(); // Display the alert
-                }}
-              >
-                Submit?
-              </button>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <button
+                  className="submit-button"
+                  onClick={() => {
+                    removeRecording(recording.id); // Remove the recording
+                    handleSubmit(); // Display the alert
+                  }}
+                >
+                  Submit?
+                </button>
+                <button
+                  style={{
+                    backgroundColor: 'red', // Red background
+                    color: 'white', // White text
+                    border: 'none',
+                    padding: '8px 16px',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    fontSize: '14px',
+                  }}
+                  onClick={() => removeRecording(recording.id)} // Remove the recording
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           ))}
         </div>
