@@ -75,11 +75,15 @@ export default function App() {
             <div key={recording.id} className="audio-item-container">
               <h3 className="recording-title">{recording.title}</h3>
               <audio src={URL.createObjectURL(recording.blob)} controls />
-              {recording.isSubmitted && ( // Show success message if submitted
+              {isLoading ? ( // Show "Voice Note sent to Koki's api ❤️" while loading
                 <p style={{ color: 'green', margin: '10px 0' }}>
                   Voice Note sent to Koki's api ❤️
                 </p>
-              )}
+              ) : recording.isSubmitted ? ( // Show "Enhanced Voice Received" after submission
+                <p style={{ color: 'green', margin: '10px 0' }}>
+                  Enhanced Voice Received
+                </p>
+              ) : null}
               <div style={{ display: 'flex', gap: '10px' }}>
                 {recording.isSubmitted ? ( // Show Download button if submitted
                   <button
