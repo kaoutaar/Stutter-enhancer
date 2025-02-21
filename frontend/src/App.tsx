@@ -21,6 +21,14 @@ export default function App() {
     setRecordings((prevRecordings) => prevRecordings.filter((recording) => recording.id !== id));
   };
 
+  const handleSubmit = () => {
+    alert("Voice Note sent to Koki's api ❤️"); // Display the alert
+  };
+
+  const handleDiamondClick = () => {
+    alert("Here is the Diamond Julliet 💎"); // Display the alert
+  };
+
   return (
     <>
       <StutterEnhancerTitle />
@@ -54,13 +62,30 @@ export default function App() {
               <audio src={URL.createObjectURL(recording.blob)} controls />
               <button
                 className="submit-button"
-                onClick={() => removeRecording(recording.id)}
+                onClick={() => {
+                  removeRecording(recording.id); // Remove the recording
+                  handleSubmit(); // Display the alert
+                }}
               >
                 Submit?
               </button>
             </div>
           ))}
         </div>
+      </div>
+      {/* Diamond emoji at the bottom of the page */}
+      <div
+        style={{
+          position: 'fixed',
+          bottom: '20px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          fontSize: '24px',
+          cursor: 'pointer',
+        }}
+        onClick={handleDiamondClick}
+      >
+        💎
       </div>
     </>
   );
