@@ -4,25 +4,31 @@ import StutterEnhancerTitle from './StutterEnhancerTitle';
 import './App.css'; // Import the CSS file
 
 export default function App() {
-  const [recordings, setRecordings] = useState<{ id: number; blob: Blob; title: string }[]>([]); // State to track all recordings
+  const [recordings, setRecordings] = useState<{ id: number; blob: Blob; title: string; isSubmitted?: boolean }[]>([]); // State to track all recordings
   const [newRecordingTitle, setNewRecordingTitle] = useState(''); // State to track the title input
+  const [isLoading, setIsLoading] = useState(false); // State to track loading state
 
   const addAudioElement = (blob: Blob) => {
     const newRecording = {
       id: Date.now(), // Unique ID for each recording
       blob,
       title: newRecordingTitle || `Recording ${recordings.length + 1}`, // Use custom title or default
+      isSubmitted: false, // Track if the recording has been submitted
     };
     setRecordings((prevRecordings) => [...prevRecordings, newRecording]);
     setNewRecordingTitle(''); // Reset the title input
   };
 
-  const removeRecording = (id: number) => {
-    setRecordings((prevRecordings) => prevRecordings.filter((recording) => recording.id !== id));
-  };
-
-  const handleSubmit = () => {
-    alert("Voice Note sent to Koki's api ❤️"); // Display the alert
+  const handleSubmit = (id: number) => {
+    setIsLoading(true); // Start loading
+    setTimeout(() => {
+      setIsLoading(false); // Stop loading after 3 seconds
+      setRecordings((prevRecordings) =>
+        prevRecordings.map((recording) =>
+          recording.id === id ? { ...recording, isSubmitted: true } : recording
+        )
+      ); // Mark the recording as submitted
+    }, 3000); // 3-second delay
   };
 
   const handleDiamondClick = () => {
@@ -60,16 +66,22 @@ export default function App() {
             <div key={recording.id} className="audio-item-container">
               <h3 className="recording-title">{recording.title}</h3>
               <audio src={URL.createObjectURL(recording.blob)} controls />
+              {recording.isSubmitted && ( // Show success message if submitted
+                <p style={{ color: 'green', margin: '10px 0' }}>
+                  Voice Note sent to Koki's api ❤️
+                </p>
+              )}
               <div style={{ display: 'flex', gap: '10px' }}>
-                <button
-                  className="submit-button"
-                  onClick={() => {
-                    removeRecording(recording.id); // Remove the recording
-                    handleSubmit(); // Display the alert
-                  }}
-                >
-                  Submit?
-                </button>
+                {isLoading ? (
+                  <div className="spinner"></div> // Show spinning wheel
+                ) : (
+                  <button
+                    className="submit-button"
+                    onClick={() => handleSubmit(recording.id)} // Start loading and mark as submitted after 3 seconds
+                  >
+                    Submit?
+                  </button>
+                )}
                 <button
                   style={{
                     backgroundColor: 'red', // Red background
@@ -80,7 +92,11 @@ export default function App() {
                     cursor: 'pointer',
                     fontSize: '14px',
                   }}
-                  onClick={() => removeRecording(recording.id)} // Remove the recording
+                  onClick={() => {
+                    setRecordings((prevRecordings) =>
+                      prevRecordings.filter((r) => r.id !== recording.id)
+                    ); // Remove the recording
+                  }}
                 >
                   Delete
                 </button>
