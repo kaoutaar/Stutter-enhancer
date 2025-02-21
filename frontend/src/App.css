@@ -1,42 +1,85 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* Reset default margin and padding */
+body, html {
+  margin: 0;
+  padding: 0;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Styles for the audio recorder container */
+.audio-recorder-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px; /* Increased width to fit everything */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px; /* Further increased gap between AudioRecorder and text box */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* Styles for the title input */
+.title-input {
+  width: 100%; /* Make the input take full width of the container */
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: center; /* Center the text inside the input */
 }
 
-.card {
-  padding: 2em;
+/* Styles for the dynamically added audio elements and buttons */
+#audio-container {
+  margin-top: 20px; /* Add some spacing between the recorder and audio elements */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px; /* Add spacing between multiple audio elements */
+  width: 100%; /* Ensure it takes full width of the container */
 }
 
-.read-the-docs {
-  color: #888;
+/* Container for each audio element and button */
+.audio-item-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px; /* Add spacing between the title, audio element, and button */
+  width: 100%; /* Ensure it takes full width of the container */
+  background-color: #f9f9f9; /* Light background for each recording */
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Styles for the recording title */
+.recording-title {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+}
+
+/* Styles for the "Submit?" button */
+.submit-button {
+  background-color: green; /* Green background */
+  color: white; /* White text */
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  flex-shrink: 0; /* Prevent the button from shrinking */
+}
+
+.submit-button:hover {
+  background-color: darkgreen; /* Darker green on hover */
+}
+
+/* Style the audio element to take available space */
+audio {
+  flex-grow: 1; /* Allow the audio element to grow and take available space */
+  max-width: 300px; /* Limit the maximum width of the audio element */
+}
+
+/* Make the AudioRecorder icon slightly bigger */
+.audio-recorder {
+  transform: scale(1.8); /* Increased size of the icon */
 }
