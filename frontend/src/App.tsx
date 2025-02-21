@@ -75,9 +75,9 @@ export default function App() {
             <div key={recording.id} className="audio-item-container">
               <h3 className="recording-title">{recording.title}</h3>
               <audio src={URL.createObjectURL(recording.blob)} controls />
-              {isLoading ? ( // Show "Voice Note sent to Koki's api ❤️" while loading
+              {isLoading ? ( // Audio Processing
                 <p style={{ color: 'green', margin: '10px 0' }}>
-                  Voice Note sent to Koki's api ❤️
+                  We're processing your audio
                 </p>
               ) : recording.isSubmitted ? ( // Show "Enhanced Voice Received" after submission
                 <p style={{ color: 'green', margin: '10px 0' }}>
@@ -85,21 +85,37 @@ export default function App() {
                 </p>
               ) : null}
               <div style={{ display: 'flex', gap: '10px' }}>
-                {recording.isSubmitted ? ( // Show Download button if submitted
-                  <button
-                    style={{
-                      backgroundColor: 'blue', // Blue background
-                      color: 'white', // White text
-                      border: 'none',
-                      padding: '8px 16px',
-                      borderRadius: '4px',
-                      cursor: 'pointer',
-                      fontSize: '14px',
-                    }}
-                    onClick={() => handleDownload(recording.blob, recording.title)} // Download the audio file
-                  >
-                    Download
-                  </button>
+                {recording.isSubmitted ? ( // Show Download and Re-enhance buttons if submitted
+                  <>
+                    <button
+                      style={{
+                        backgroundColor: 'blue', // Blue background
+                        color: 'white', // White text
+                        border: 'none',
+                        padding: '8px 16px',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                        fontSize: '14px',
+                      }}
+                      onClick={() => handleDownload(recording.blob, recording.title)} // Download the audio file
+                    >
+                      Download
+                    </button>
+                    <button
+                      style={{
+                        backgroundColor: 'orange', // Orange background for Re-enhance
+                        color: 'white', // White text
+                        border: 'none',
+                        padding: '8px 16px',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                        fontSize: '14px',
+                      }}
+                      onClick={() => handleSubmit(recording.id)} // Re-submit the audio for enhancement
+                    >
+                      Re-enhance
+                    </button>
+                  </>
                 ) : isLoading ? (
                   <div className="spinner"></div> // Show spinning wheel
                 ) : (
