@@ -31,6 +31,15 @@ export default function App() {
     }, 3000); // 3-second delay
   };
 
+  const handleDownload = (blob: Blob, title: string) => {
+    const url = URL.createObjectURL(blob); // Create a URL for the blob
+    const a = document.createElement('a'); // Create an anchor element
+    a.href = url; // Set the href to the blob URL
+    a.download = `${title}.mp3`; // Set the download filename
+    a.click(); // Trigger the download
+    URL.revokeObjectURL(url); // Clean up the URL
+  };
+
   const handleDiamondClick = () => {
     alert("Here is the Diamond Julliet 💎"); // Display the alert
   };
@@ -72,7 +81,22 @@ export default function App() {
                 </p>
               )}
               <div style={{ display: 'flex', gap: '10px' }}>
-                {isLoading ? (
+                {recording.isSubmitted ? ( // Show Download button if submitted
+                  <button
+                    style={{
+                      backgroundColor: 'blue', // Blue background
+                      color: 'white', // White text
+                      border: 'none',
+                      padding: '8px 16px',
+                      borderRadius: '4px',
+                      cursor: 'pointer',
+                      fontSize: '14px',
+                    }}
+                    onClick={() => handleDownload(recording.blob, recording.title)} // Download the audio file
+                  >
+                    Download
+                  </button>
+                ) : isLoading ? (
                   <div className="spinner"></div> // Show spinning wheel
                 ) : (
                   <button
