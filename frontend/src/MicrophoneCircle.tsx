@@ -3,6 +3,7 @@ import { FaMicrophone, FaUpload, FaPause, FaTrash, FaPlay } from 'react-icons/fa
 import { useAudioRecorder } from 'react-audio-voice-recorder'; // useAudioRecorder hook
 import { LiveAudioVisualizer } from 'react-audio-visualize'; // Live audio visualizer
 import './App.css'; // Import the CSS file
+import StutterEnhancerTitle from './StutterEnhancerTitle';
 
 const MicrophoneCircle: React.FC = () => {
   const {
@@ -18,6 +19,7 @@ const MicrophoneCircle: React.FC = () => {
 
   return (
     <div className="container">
+      <StutterEnhancerTitle />
       {/* Microphone Circle */}
       {!isRecording && (
         <div className="microphone-circle" onClick={startRecording}>

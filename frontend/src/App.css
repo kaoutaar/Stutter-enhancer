@@ -13,8 +13,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40vmin;
-  height: 40vmin;
+  width: 30vmin;
+  height: 30vmin;
   background-color: #7c3aed; /* Purple background */
   border-radius: 50%; /* Makes it a circle */
   cursor: pointer; /* Indicates it's clickable */
