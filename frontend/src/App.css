@@ -76,3 +76,42 @@
   justify-content: center;
   cursor: pointer;
 }
+
+/* Loading Overlay */
+.loading-overlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  z-index: 1000;
+}
+
+/* Spinner */
+.spinner {
+  border: 6px solid rgba(0, 0, 0, 0.1); 
+  border-top: 6px solid #7c3aed; 
+  border-radius: 50%;
+  width: 80px; 
+  height: 80px; 
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Processing Text */
+.loading-overlay p {
+  color: #7c3aed;
+  font-size: 32px;
+  font-weight: bold;
+}

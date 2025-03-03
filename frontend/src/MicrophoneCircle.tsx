@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaMicrophone, FaUpload, FaPause, FaTrash, FaPlay } from 'react-icons/fa'; // Import FaPlay
 import { useAudioRecorder } from 'react-audio-voice-recorder'; // useAudioRecorder hook
 import { LiveAudioVisualizer } from 'react-audio-visualize'; // Live audio visualizer
+import StutterEnhancerTitle from './StutterEnhancerTitle'; // Import the title component
 import './App.css'; // Import the CSS file
-import StutterEnhancerTitle from './StutterEnhancerTitle';
 
 const MicrophoneCircle: React.FC = () => {
   const {
@@ -17,11 +17,23 @@ const MicrophoneCircle: React.FC = () => {
     mediaRecorder,
   } = useAudioRecorder();
 
+  const [isUploading, setIsUploading] = useState(false); // Track upload state
+
+  // Simulate upload process
+  const handleUpload = () => {
+    setIsUploading(true); // Show loading spinner and "Processing" text
+    setTimeout(() => {
+      setIsUploading(false); // Hide loading spinner and "Processing" text after 10 seconds
+    }, 10000); // 10-second delay
+  };
+
   return (
     <div className="container">
+      {/* Stutter Enhancer Title */}
       <StutterEnhancerTitle />
+
       {/* Microphone Circle */}
-      {!isRecording && (
+      {!isRecording && !isUploading && (
         <div className="microphone-circle" onClick={startRecording}>
           <div className="microphone-icon">
             <FaMicrophone />
@@ -30,11 +42,11 @@ const MicrophoneCircle: React.FC = () => {
       )}
 
       {/* Audio Control Bar */}
-      {isRecording && (
+      {isRecording && !isUploading && (
         <div className="audio-control-bar">
           {/* Left Section (Upload Icon and Seconds) */}
           <div className="left-section">
-            <div className="icon-button">
+            <div className="icon-button" onClick={handleUpload}>
               <FaUpload size={24} color="#4F46E5" />
             </div>
             <span>{formatTime(recordingTime)}</span>
@@ -63,6 +75,14 @@ const MicrophoneCircle: React.FC = () => {
               <FaTrash size={24} color="#EF4444" />
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Loading Spinner and Processing Text */}
+      {isUploading && (
+        <div className="loading-overlay">
+          <div className="spinner"></div>
+          <p>Processing...</p>
         </div>
       )}
     </div>
