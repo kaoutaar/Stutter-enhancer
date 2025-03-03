@@ -1,133 +1,78 @@
-/* Reset default margin and padding */
-body, html {
-  margin: 0;
-  padding: 0;
-}
-
-/* Styles for the audio recorder container */
-.audio-recorder-container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 500px; /* Fixed width for desktop */
+/* Center the container in the middle of the screen */
+.container {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 30px; /* Increased gap between AudioRecorder and text box */
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: #f3f4f6; /* Light gray background */
 }
 
-/* Styles for the title input */
-.title-input {
-  width: 100%; /* Make the input take full width of the container */
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
-  text-align: center; /* Center the text inside the input */
-}
-
-/* Styles for the dynamically added audio elements and buttons */
-#audio-container {
-  margin-top: 20px; /* Add some spacing between the recorder and audio elements */
+/* Microphone Circle */
+.microphone-circle {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 20px; /* Add spacing between multiple audio elements */
-  width: 100%; /* Ensure it takes full width of the container */
+  justify-content: center;
+  width: 40vmin;
+  height: 40vmin;
+  background-color: #7c3aed; /* Purple background */
+  border-radius: 50%; /* Makes it a circle */
+  cursor: pointer; /* Indicates it's clickable */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
 }
 
-/* Container for each audio element and button */
-.audio-item-container {
+/* Microphone Icon */
+.microphone-icon {
+  font-size: 20vmin; /* Size of the microphone icon */
+  color: white; /* White color */
+}
+
+/* Audio Control Bar */
+.audio-control-bar {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 10px; /* Add spacing between the title, audio element, and button */
-  width: 100%; /* Ensure it takes full width of the container */
-  background-color: #f9f9f9; /* Light background for each recording */
-  padding: 10px;
+  justify-content: space-between; /* Space items evenly */
+  padding: 16px;
+  background-color: white;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 80%; /* Make the control bar wider */
+  max-width: 600px; /* Set a maximum width */
 }
 
-/* Styles for the recording title */
-.recording-title {
-  margin: 0;
-  font-size: 18px;
-  color: #333;
+/* Left Section (Upload Icon and Seconds) */
+.left-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-/* Styles for the "Submit?" button */
-.submit-button {
-  background-color: green; /* Green background */
-  color: white; /* White text */
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
+/* Seconds Text */
+.left-section span {
+  color: #7c3aed; /* Purple color for the seconds text */
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* Waveform */
+.waveform {
+  flex: 1; /* Take up remaining space */
+  height: 64px;
+  min-width: 250px; /* Ensure the container is wide enough */
+  margin: 0 25px; /* Add equal margin on both sides */
+}
+
+/* Icon Buttons Container (Play/Pause and Trash) */
+.icon-buttons {
+  display: flex;
+  align-items: center;
+  gap: 16px; /* Space between play/pause and trash icons */
+}
+
+/* Icon Button */
+.icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  font-size: 14px;
-  flex-shrink: 0; /* Prevent the button from shrinking */
-}
-
-.submit-button:hover {
-  background-color: darkgreen; /* Darker green on hover */
-}
-
-/* Style the audio element to take available space */
-audio {
-  width: 100%; /* Take up full width of the container */
-  max-width: 300px; /* Limit the maximum width of the audio element */
-}
-
-/* Make the AudioRecorder icon slightly bigger */
-.audio-recorder {
-  transform: scale(1.8); /* Increased size of the icon */
-}
-
-/* Media queries for screens smaller than 510.667px */
-@media (max-width: 510.667px) {
-  .audio-recorder-container {
-    width: 90%; /* Reduce container width for smaller screens */
-    gap: 20px; /* Adjust gap for smaller screens */
-  }
-
-  audio {
-    max-width: 200px; /* Make the audio element smaller */
-  }
-
-  .title-input {
-    font-size: 12px; /* Smaller font size for smaller screens */
-  }
-
-  .recording-title {
-    font-size: 16px; /* Smaller font size for smaller screens */
-  }
-
-  .submit-button {
-    padding: 6px 12px; /* Smaller padding for smaller screens */
-    font-size: 12px; /* Smaller font size for smaller screens */
-  }
-
-  .audio-recorder {
-    transform: scale(1.5); /* Smaller icon for smaller screens */
-  }
-}
-
-/* Spinning wheel animation */
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-.spinner {
-  border: 4px solid rgba(0, 0, 0, 0.1); /* Light gray border */
-  border-top: 4px solid green; /* Green top border */
-  border-radius: 50%; /* Circular shape */
-  width: 24px; /* Width of the spinner */
-  height: 24px; /* Height of the spinner */
-  animation: spin 1s linear infinite; /* Apply the spin animation */
 }
