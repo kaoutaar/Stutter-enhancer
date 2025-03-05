@@ -55,14 +55,16 @@ const MicrophoneCircle: React.FC = () => {
           {/* Audio Visualizer in the Middle */}
           <div className="waveform">
             {mediaRecorder && (
-              <LiveAudioVisualizer
-                mediaRecorder={mediaRecorder}
-                width={400} // Width of the visualizer
-                height={64} // Height of the visualizer
-                barWidth={2} // Width of each bar
-                gap={1} // Gap between bars
-                barColor="#4F46E5" // Purple color for the bars
-              />
+              <div className="visualizer-container">
+                <LiveAudioVisualizer
+                  mediaRecorder={mediaRecorder}
+                  width={400} // Default width
+                  height={64}
+                  barWidth={3}
+                  gap={1}
+                  barColor="#4F46E5"
+                />
+              </div>
             )}
           </div>
 

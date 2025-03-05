@@ -45,6 +45,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-shrink: 0; /* Prevent shrinking */
 }
 
 /* Seconds Text */
@@ -54,12 +55,25 @@
   font-weight: bold;
 }
 
-/* Waveform */
+/* Waveform Container */
 .waveform {
   flex: 1; /* Take up remaining space */
-  height: 64px;
-  min-width: 250px; /* Ensure the container is wide enough */
-  margin: 0 25px; /* Add equal margin on both sides */
+  height: 64px; /* Default height */
+  margin: 0 16px; /* Add equal margin on both sides */
+  min-width: 100px; /* Ensure the container is wide enough */
+  display: flex;
+  align-items: center; /* Center vertically */
+}
+
+/* Visualizer Container */
+.visualizer-container {
+  width: 100%; /* Fill the waveform container */
+  overflow: hidden; /* Ensure the visualizer stays within the container */
+}
+
+/* Force the visualizer to fill the container */
+.visualizer-container > * {
+  width: 100%;
 }
 
 /* Icon Buttons Container (Play/Pause and Trash) */
@@ -67,6 +81,7 @@
   display: flex;
   align-items: center;
   gap: 16px; /* Space between play/pause and trash icons */
+  flex-shrink: 0; /* Prevent shrinking */
 }
 
 /* Icon Button */
@@ -92,11 +107,11 @@
 
 /* Spinner */
 .spinner {
-  border: 6px solid rgba(0, 0, 0, 0.1); 
-  border-top: 6px solid #7c3aed; 
+  border: 6px solid rgba(0, 0, 0, 0.1);
+  border-top: 6px solid #7c3aed;
   border-radius: 50%;
-  width: 80px; 
-  height: 80px; 
+  width: 80px;
+  height: 80px;
   animation: spin 1s linear infinite;
 }
 
@@ -114,4 +129,24 @@
   color: #7c3aed;
   font-size: 32px;
   font-weight: bold;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+  .audio-control-bar {
+    padding: 12px; /* Reduce padding for smaller screens */
+  }
+
+  .waveform {
+    margin: 0 8px; /* Reduce margin for smaller screens */
+    min-width: 80px; /* Smaller minimum width for mobile */
+  }
+
+  .left-section span {
+    font-size: 14px; /* Smaller font size for seconds text */
+  }
+
+  .icon-buttons {
+    gap: 12px; /* Reduce gap between icons */
+  }
 }
