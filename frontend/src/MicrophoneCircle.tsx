@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { FaMicrophone, FaUpload, FaPause, FaTrash, FaPlay } from 'react-icons/fa'; // Import FaPlay
-import { useAudioRecorder } from 'react-audio-voice-recorder'; // useAudioRecorder hook
-import { LiveAudioVisualizer } from 'react-audio-visualize'; // Live audio visualizer
-import StutterEnhancerTitle from './StutterEnhancerTitle'; // Import the title component
-import './App.css'; // Import the CSS file
+import { FaMicrophone, FaUpload, FaPause, FaTrash, FaPlay } from 'react-icons/fa';
+import { useAudioRecorder } from 'react-audio-voice-recorder';
+import { LiveAudioVisualizer } from 'react-audio-visualize';
+import StutterEnhancerTitle from './StutterEnhancerTitle';
+import './App.css';
 
 const MicrophoneCircle: React.FC = () => {
   const {
@@ -18,13 +18,28 @@ const MicrophoneCircle: React.FC = () => {
   } = useAudioRecorder();
 
   const [isUploading, setIsUploading] = useState(false); // Track upload state
+  const [isProcessingComplete, setIsProcessingComplete] = useState(false); // Track processing completion
+  const [showAudioController, setShowAudioController] = useState(false); // Track audio controller visibility
 
   // Simulate upload process
   const handleUpload = () => {
     setIsUploading(true); // Show loading spinner and "Processing" text
     setTimeout(() => {
-      setIsUploading(false); // Hide loading spinner and "Processing" text after 10 seconds
+      setIsUploading(false); // Hide loading spinner and "Processing" text
+      setIsProcessingComplete(true); // Mark processing as complete
     }, 10000); // 10-second delay
+  };
+
+  // Handle submit button click
+  const handleSubmit = () => {
+    alert('Text submitted!'); // Replace with your desired functionality
+  };
+
+  // Handle small microphone circle click
+  const handleSmallMicrophoneClick = () => {
+    setIsProcessingComplete(false); // Hide the textbox and submit button
+    setShowAudioController(true); // Show the audio controller
+    startRecording(); // Start recording when the small microphone is clicked
   };
 
   return (
@@ -33,7 +48,7 @@ const MicrophoneCircle: React.FC = () => {
       <StutterEnhancerTitle />
 
       {/* Microphone Circle */}
-      {!isRecording && !isUploading && (
+      {!isRecording && !isUploading && !isProcessingComplete && !showAudioController && (
         <div className="microphone-circle" onClick={startRecording}>
           <div className="microphone-icon">
             <FaMicrophone />
@@ -42,7 +57,7 @@ const MicrophoneCircle: React.FC = () => {
       )}
 
       {/* Audio Control Bar */}
-      {isRecording && !isUploading && (
+      {(isRecording || showAudioController) && !isUploading && !isProcessingComplete && (
         <div className="audio-control-bar">
           {/* Left Section (Upload Icon and Seconds) */}
           <div className="left-section">
@@ -85,6 +100,27 @@ const MicrophoneCircle: React.FC = () => {
         <div className="loading-overlay">
           <div className="spinner"></div>
           <p>Processing...</p>
+        </div>
+      )}
+
+      {/* Textbox and Submit Button after Processing is Complete */}
+      {isProcessingComplete && !showAudioController && (
+        <div className="textbox-container">
+          <textarea
+            className="textbox"
+            placeholder="Enter your text here..."
+            rows={10}
+            cols={50}
+          />
+          <button className="submit-button" onClick={handleSubmit}>
+            Submit
+          </button>
+          {/* Small Microphone Circle */}
+          <div className="small-microphone-circle" onClick={handleSmallMicrophoneClick}>
+            <div className="small-microphone-icon">
+              <FaMicrophone />
+            </div>
+          </div>
         </div>
       )}
     </div>

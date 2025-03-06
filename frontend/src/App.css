@@ -21,9 +21,29 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
 }
 
+/* Small Microphone Circle */
+.small-microphone-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 15vmin; /* Smaller size */
+  height: 15vmin; /* Smaller size */
+  background-color: #7c3aed; /* Purple background */
+  border-radius: 50%; /* Makes it a circle */
+  cursor: pointer; /* Indicates it's clickable */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  margin-top: 20px; /* Space between submit button and microphone */
+}
+
 /* Microphone Icon */
 .microphone-icon {
   font-size: 20vmin; /* Size of the microphone icon */
+  color: white; /* White color */
+}
+
+/* Small Microphone Icon */
+.small-microphone-icon {
+  font-size: 10vmin; /* Smaller size */
   color: white; /* White color */
 }
 
@@ -131,6 +151,54 @@
   font-weight: bold;
 }
 
+/* Textbox Container */
+.textbox-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* Align content to the top */
+  width: 100%;
+  height: 70vh; /* Take up 70% of the viewport height */
+  margin-top: 2vh; /* Reduced gap at the top */
+}
+
+/* Textbox */
+.textbox {
+  width: 80%;
+  max-width: 600px;
+  height: 100%; /* Take up the full height of the container */
+  padding: 16px;
+  font-size: 16px;
+  border: 2px solid #7c3aed; /* Purple border */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  resize: vertical; /* Allow vertical resizing */
+  outline: none; /* Remove default outline */
+}
+
+.textbox:focus {
+  border-color: #4F46E5; /* Change border color on focus */
+}
+
+/* Submit Button */
+.submit-button {
+  margin-top: 10px; /* Reduced space between textbox and button */
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background-color: #7c3aed; /* Purple background */
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #6d28d9; /* Darker purple on hover */
+}
+
 /* Responsive Adjustments */
 @media (max-width: 600px) {
   .audio-control-bar {
@@ -148,5 +216,24 @@
 
   .icon-buttons {
     gap: 12px; /* Reduce gap between icons */
+  }
+
+  .textbox {
+    width: 90%; /* Make textbox wider on smaller screens */
+    font-size: 14px; /* Smaller font size for mobile */
+  }
+
+  .submit-button {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  .small-microphone-circle {
+    width: 12vmin; /* Smaller size for mobile */
+    height: 12vmin; /* Smaller size for mobile */
+  }
+
+  .small-microphone-icon {
+    font-size: 8vmin; /* Smaller size for mobile */
   }
 }
