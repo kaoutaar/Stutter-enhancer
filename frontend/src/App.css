@@ -199,6 +199,80 @@
   background-color: #6d28d9; /* Darker purple on hover */
 }
 
+/* Audio Player */
+.audio-player {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.play-pause-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  background-color: #7c3aed; /* Purple background */
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+}
+
+.play-pause-button:hover {
+  background-color: #6d28d9; /* Darker purple on hover */
+}
+
+/* Waveform Container */
+.waveform-container {
+  flex: 1; /* Take up remaining space */
+  height: 64px; /* Height of the waveform */
+  margin-left: 16px; /* Add some margin */
+}
+
+/* Enhanced Window */
+.enhanced-window {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 800px;
+}
+
+.audio-players {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.download-button {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background-color: #7c3aed; /* Purple background */
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+}
+
+.download-button:hover {
+  background-color: #6d28d9; /* Darker purple on hover */
+}
+
 /* Responsive Adjustments */
 @media (max-width: 600px) {
   .audio-control-bar {

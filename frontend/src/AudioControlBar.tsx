@@ -4,12 +4,12 @@ import { LiveAudioVisualizer } from 'react-audio-visualize';
 import './App.css';
 
 interface AudioControlBarProps {
-  mediaRecorder: MediaRecorder | undefined; // Change to `undefined`
-  recordingTime: number;
-  isPaused: boolean;
-  onUpload: () => void;
-  onPauseResume: () => void;
-  onStop: () => void;
+  mediaRecorder: MediaRecorder | undefined; // MediaRecorder instance
+  recordingTime: number; // Current recording time
+  isPaused: boolean; // Whether recording is paused
+  onUpload: (blob: Blob) => void; // Callback for upload
+  onPauseResume: () => void; // Callback for pause/resume
+  onStop: () => void; // Callback for stop
 }
 
 const AudioControlBar: React.FC<AudioControlBarProps> = ({
@@ -20,11 +20,30 @@ const AudioControlBar: React.FC<AudioControlBarProps> = ({
   onPauseResume,
   onStop,
 }) => {
+  // Handle upload button click
+  const handleUpload = () => {
+    if (!mediaRecorder) {
+      alert('No recording available. Please record audio first.'); // Warn the user
+      return;
+    }
+
+    // Stop recording and get the blob
+    mediaRecorder.stop();
+    mediaRecorder.ondataavailable = (event) => {
+      const blob = event.data;
+      if (blob.size > 0) {
+        onUpload(blob); // Pass the blob to the parent component
+      } else {
+        alert('Recording is empty. Please record audio first.'); // Warn the user
+      }
+    };
+  };
+
   return (
     <div className="audio-control-bar">
       {/* Left Section (Upload Icon and Seconds) */}
       <div className="left-section">
-        <div className="icon-button" onClick={onUpload}>
+        <div className="icon-button" onClick={handleUpload}>
           <FaUpload size={24} color="#4F46E5" />
         </div>
         <span>{formatTime(recordingTime)}</span>
@@ -36,7 +55,7 @@ const AudioControlBar: React.FC<AudioControlBarProps> = ({
           <div className="visualizer-container">
             <LiveAudioVisualizer
               mediaRecorder={mediaRecorder}
-              width={400}
+              width={400} // Default width
               height={64}
               barWidth={3}
               gap={1}

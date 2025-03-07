@@ -5,6 +5,7 @@ import MicrophoneButton from './MicrophoneButton';
 import AudioControlBar from './AudioControlBar';
 import LoadingOverlay from './LoadingOverlay';
 import TextboxWithSubmit from './TextboxWithSubmit';
+import EnhancedWindow from './EnhancedWindow';
 import './App.css';
 
 const MicrophoneCircle: React.FC = () => {
@@ -23,20 +24,25 @@ const MicrophoneCircle: React.FC = () => {
   const [isProcessingComplete, setIsProcessingComplete] = useState(false); // Track processing completion
   const [showAudioController, setShowAudioController] = useState(false); // Track audio controller visibility
   const [textboxValue, setTextboxValue] = useState(''); // Store textbox value
+  const [showEnhancedWindow, setShowEnhancedWindow] = useState(false); // Track EnhancedWindow visibility
+  const [savedAudioBlob, setSavedAudioBlob] = useState<Blob>(); // Store the audio blob (non-null)
 
-  // Simulate upload process
-  const handleUpload = () => {
-    setIsUploading(true); // Show loading spinner and "Processing" text
+  // Handle upload from AudioControlBar
+  const handleUpload = (blob: Blob) => {
+    setIsUploading(true); // Show processing screen
     setTimeout(() => {
-      setIsUploading(false); // Hide loading spinner and "Processing" text
+      setIsUploading(false); // Hide processing screen
+      setSavedAudioBlob(blob); // Save the audio blob
       setIsProcessingComplete(true); // Mark processing as complete
       populateTextbox(); // Populate the textbox with random text
-    }, 2000); // 2-second delay
+      console.log('Audio Blob:', blob); // Log the audio blob
+      console.log('Audio URL:', URL.createObjectURL(blob)); // Log the audio URL
+    }, 2000); // Simulate processing delay
   };
 
   // Handle submit button click
   const handleSubmit = () => {
-    alert('Text submitted!'); // Replace with your desired functionality
+    setShowEnhancedWindow(true); // Show the EnhancedWindow
   };
 
   // Handle small microphone circle click
@@ -77,14 +83,14 @@ const MicrophoneCircle: React.FC = () => {
       <StutterEnhancerTitle />
 
       {/* Microphone Circle */}
-      {!isRecording && !isUploading && !isProcessingComplete && !showAudioController && (
+      {!isRecording && !isUploading && !isProcessingComplete && !showAudioController && !showEnhancedWindow && (
         <MicrophoneButton onClick={startRecording} size="large" />
       )}
 
       {/* Audio Control Bar */}
-      {(isRecording || showAudioController) && !isUploading && !isProcessingComplete && (
+      {(isRecording || showAudioController) && !isUploading && !isProcessingComplete && !showEnhancedWindow && (
         <AudioControlBar
-          mediaRecorder={mediaRecorder}
+          mediaRecorder={mediaRecorder || undefined} // Convert `null` to `undefined`
           recordingTime={recordingTime}
           isPaused={isPaused}
           onUpload={handleUpload}
@@ -97,7 +103,7 @@ const MicrophoneCircle: React.FC = () => {
       {isUploading && <LoadingOverlay />}
 
       {/* Textbox and Submit Button after Processing is Complete */}
-      {isProcessingComplete && !showAudioController && (
+      {isProcessingComplete && !isUploading && !showAudioController && !showEnhancedWindow && (
         <TextboxWithSubmit
           textboxValue={textboxValue}
           onTextboxChange={(e) => setTextboxValue(e.target.value)} // Allow editing
@@ -105,6 +111,9 @@ const MicrophoneCircle: React.FC = () => {
           onMicrophoneClick={handleSmallMicrophoneClick}
         />
       )}
+
+      {/* Enhanced Window */}
+      {showEnhancedWindow && savedAudioBlob && <EnhancedWindow audioBlob={savedAudioBlob} />}
     </div>
   );
 };
