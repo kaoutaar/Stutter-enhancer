@@ -7,30 +7,13 @@ interface EnhancedWindowProps {
 }
 
 const EnhancedWindow: React.FC<EnhancedWindowProps> = ({ audioBlob }) => {
-  // Handle download button click
-  const handleDownload = () => {
-    const url = URL.createObjectURL(audioBlob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'enhanced-audio.mp3'; // Set the file name
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
   return (
     <div className="enhanced-window">
-      <h2>Enhanced Audio</h2>
-      <div className="audio-players">
-        {/* First AudioPlayer */}
-        <AudioPlayer audioBlob={audioBlob} />
-        {/* Second AudioPlayer */}
-        <AudioPlayer audioBlob={audioBlob} />
-      </div>
-      {/* Download Button */}
-      <button className="download-button" onClick={handleDownload}>
-        Download MP3
-      </button>
+      {/* Vanilla Audio Player */}
+      <AudioPlayer audioBlob={audioBlob} title="Vanilla Audio" align="right" />
+
+      {/* Enhanced Audio Player */}
+      <AudioPlayer audioBlob={audioBlob} title="Enhanced Audio" align="left" />
     </div>
   );
 };
