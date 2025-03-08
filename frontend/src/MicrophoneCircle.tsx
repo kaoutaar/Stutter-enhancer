@@ -25,14 +25,12 @@ const MicrophoneCircle: React.FC = () => {
   const [showAudioController, setShowAudioController] = useState(false); // Track audio controller visibility
   const [textboxValue, setTextboxValue] = useState(''); // Store textbox value
   const [showEnhancedWindow, setShowEnhancedWindow] = useState(false); // Track EnhancedWindow visibility
-  const [savedAudioBlob, setSavedAudioBlob] = useState<Blob>(); // Store the audio blob (non-null)
 
   // Handle upload from AudioControlBar
   const handleUpload = (blob: Blob) => {
     setIsUploading(true); // Show processing screen
     setTimeout(() => {
       setIsUploading(false); // Hide processing screen
-      setSavedAudioBlob(blob); // Save the audio blob
       setIsProcessingComplete(true); // Mark processing as complete
       populateTextbox(); // Populate the textbox with random text
       console.log('Audio Blob:', blob); // Log the audio blob
@@ -113,7 +111,7 @@ const MicrophoneCircle: React.FC = () => {
       )}
 
       {/* Enhanced Window */}
-      {showEnhancedWindow && savedAudioBlob && <EnhancedWindow audioBlob={savedAudioBlob} />}
+      {showEnhancedWindow && recordingBlob && <EnhancedWindow audioBlob={recordingBlob} />}
     </div>
   );
 };

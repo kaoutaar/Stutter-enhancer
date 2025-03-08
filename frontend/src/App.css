@@ -209,8 +209,11 @@
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
+  max-width: 600px; /* Adjust as needed */
+  margin: 0 auto; /* Center the player */
 }
 
+/* Play/Pause Button */
 .play-pause-button {
   display: flex;
   align-items: center;
@@ -232,45 +235,24 @@
 .waveform-container {
   flex: 1; /* Take up remaining space */
   height: 64px; /* Height of the waveform */
-  margin-left: 16px; /* Add some margin */
 }
 
-/* Enhanced Window */
-.enhanced-window {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  padding: 20px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 80%;
-  max-width: 800px;
-}
-
-.audio-players {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 100%;
-}
-
+/* Download Button */
 .download-button {
-  padding: 12px 24px;
-  font-size: 16px;
-  font-weight: bold;
-  color: white;
-  background-color: #7c3aed; /* Purple background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  background-color: #10b981; /* Green background */
   border: none;
-  border-radius: 8px;
+  border-radius: 50%;
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: background-color 0.3s ease;
 }
 
 .download-button:hover {
-  background-color: #6d28d9; /* Darker purple on hover */
+  background-color: #059669; /* Darker green on hover */
 }
 
 /* Responsive Adjustments */
@@ -309,5 +291,16 @@
 
   .small-microphone-icon {
     font-size: 8vmin; /* Smaller size for mobile */
+  }
+
+  /* Responsive Adjustments for Audio Player */
+  .audio-player {
+    padding: 12px; /* Reduce padding for smaller screens */
+    gap: 12px; /* Reduce gap between buttons */
+  }
+
+  .play-pause-button,
+  .download-button {
+    padding: 10px; /* Smaller padding for buttons */
   }
 }
