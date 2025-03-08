@@ -5,9 +5,11 @@ import './App.css';
 
 interface AudioPlayerProps {
   audioBlob: Blob; // Audio blob to play (non-null)
+  title: string; // Title for the audio player
+  align: 'left' | 'right'; // Alignment for positioning
 }
 
-const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioBlob }) => {
+const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioBlob, title, align }) => {
   const [isPlaying, setIsPlaying] = useState(false); // Track playback state
   const audioRef = useRef<HTMLAudioElement>(null); // Reference to the audio element
   const [audioUrl, setAudioUrl] = useState<string>(''); // Store the stable audio URL
@@ -34,8 +36,15 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioBlob }) => {
     const audio = audioRef.current;
     if (audio) {
       const updateTime = () => setCurrentTime(audio.currentTime);
+      const handleEnded = () => setIsPlaying(false); // Reset play/pause button when audio ends
+
       audio.addEventListener('timeupdate', updateTime);
-      return () => audio.removeEventListener('timeupdate', updateTime);
+      audio.addEventListener('ended', handleEnded);
+
+      return () => {
+        audio.removeEventListener('timeupdate', updateTime);
+        audio.removeEventListener('ended', handleEnded);
+      };
     }
   }, []);
 
@@ -81,7 +90,10 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioBlob }) => {
   };
 
   return (
-    <div className="audio-player">
+    <div className={`audio-player ${align}`}>
+      {/* Title */}
+      <h3>{title}</h3>
+
       {/* Audio element */}
       <audio ref={audioRef} src={audioUrl} /> {/* Hidden audio element */}
 

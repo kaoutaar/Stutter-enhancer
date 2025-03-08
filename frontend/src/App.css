@@ -199,18 +199,39 @@
   background-color: #6d28d9; /* Darker purple on hover */
 }
 
-/* Audio Player */
+/* Audio Player Container */
 .audio-player {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   gap: 16px;
   padding: 16px;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 600px; /* Adjust as needed */
-  margin: 0 auto; /* Center the player */
+  max-width: 400px; /* Adjust as needed */
+  margin: 16px 0; /* Add margin between players */
+}
+
+/* Left-aligned Audio Player */
+.audio-player.left {
+  align-self: flex-start; /* Align to the left */
+  margin-right: auto; /* Push to the left */
+}
+
+/* Right-aligned Audio Player */
+.audio-player.right {
+  align-self: flex-end; /* Align to the right */
+  margin-left: auto; /* Push to the right */
+}
+
+/* Title */
+.audio-player h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+  color: #7c3aed; /* Purple color */
 }
 
 /* Play/Pause Button */
@@ -235,6 +256,7 @@
 .waveform-container {
   flex: 1; /* Take up remaining space */
   height: 64px; /* Height of the waveform */
+  width: 100%; /* Full width */
 }
 
 /* Download Button */
