@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { lazy, Suspense, useState } from 'react';
 import { useAudioRecorder } from 'react-audio-voice-recorder';
 import StutterEnhancerTitle from './StutterEnhancerTitle';
 import MicrophoneButton from './MicrophoneButton';
 import AudioControlBar from './AudioControlBar';
-import LoadingOverlay from './LoadingOverlay';
 import TextboxWithSubmit from './TextboxWithSubmit';
-import EnhancedWindow from './EnhancedWindow';
 import './App.css';
+
+const EnhancedWindow = lazy(() => import('./EnhancedWindow'));
+const LoadingOverlay = lazy(() => import('./LoadingOverlay'));
 
 const MicrophoneCircle: React.FC = () => {
   const {
@@ -25,6 +26,16 @@ const MicrophoneCircle: React.FC = () => {
   const [showAudioController, setShowAudioController] = useState(false); // Track audio controller visibility
   const [textboxValue, setTextboxValue] = useState(''); // Store textbox value
   const [showEnhancedWindow, setShowEnhancedWindow] = useState(false); // Track EnhancedWindow visibility
+
+  // Reset the app to its initial state
+  const resetApp = () => {
+    stopRecording(); // Stop any ongoing recording
+    setIsUploading(false);
+    setIsProcessingComplete(false);
+    setShowAudioController(false);
+    setTextboxValue('');
+    setShowEnhancedWindow(false);
+  };
 
   // Handle upload from AudioControlBar
   const handleUpload = (blob: Blob) => {
@@ -45,9 +56,14 @@ const MicrophoneCircle: React.FC = () => {
 
   // Handle small microphone circle click
   const handleSmallMicrophoneClick = () => {
-    setIsProcessingComplete(false); // Hide the textbox and submit button
-    setShowAudioController(true); // Show the audio controller
-    startRecording(); // Start recording when the small microphone is clicked
+    resetApp(); // Reset the app to its initial state
+    startRecording(); // Start a new recording
+  };
+
+  // Handle large microphone circle click
+  const handleLargeMicrophoneClick = () => {
+    resetApp(); // Reset the app to its initial state
+    startRecording(); // Start a new recording
   };
 
   // Populate the textbox with random text
@@ -82,7 +98,7 @@ const MicrophoneCircle: React.FC = () => {
 
       {/* Microphone Circle */}
       {!isRecording && !isUploading && !isProcessingComplete && !showAudioController && !showEnhancedWindow && (
-        <MicrophoneButton onClick={startRecording} size="large" />
+        <MicrophoneButton onClick={handleLargeMicrophoneClick} size="large" />
       )}
 
       {/* Audio Control Bar */}
@@ -98,7 +114,11 @@ const MicrophoneCircle: React.FC = () => {
       )}
 
       {/* Loading Spinner and Processing Text */}
-      {isUploading && <LoadingOverlay />}
+      {isUploading && (
+        <Suspense fallback={<div>Loading...</div>}>
+          <LoadingOverlay />
+        </Suspense>
+      )}
 
       {/* Textbox and Submit Button after Processing is Complete */}
       {isProcessingComplete && !isUploading && !showAudioController && !showEnhancedWindow && (
@@ -111,7 +131,11 @@ const MicrophoneCircle: React.FC = () => {
       )}
 
       {/* Enhanced Window */}
-      {showEnhancedWindow && recordingBlob && <EnhancedWindow audioBlob={recordingBlob} />}
+      {showEnhancedWindow && recordingBlob && (
+        <Suspense fallback={<div>Loading...</div>}>
+          <EnhancedWindow audioBlob={recordingBlob} onReset={resetApp} />
+        </Suspense>
+      )}
     </div>
   );
 };

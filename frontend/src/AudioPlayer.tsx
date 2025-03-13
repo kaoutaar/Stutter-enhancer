@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { FaPlay, FaPause, FaDownload } from 'react-icons/fa';
-import { AudioVisualizer } from 'react-audio-visualize'; // For the live waveform
+import { AudioVisualizer } from 'react-audio-visualize';
 import './App.css';
 
 interface AudioPlayerProps {
@@ -14,11 +14,12 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioBlob, title, align }) =>
   const audioRef = useRef<HTMLAudioElement>(null); // Reference to the audio element
   const [audioUrl, setAudioUrl] = useState<string>(''); // Store the stable audio URL
   const [currentTime, setCurrentTime] = useState(0); // Track current playback time
+  const [error, setError] = useState<string | null>(null); // Track errors
 
   // Create a stable URL for the audio blob
   useEffect(() => {
     if (!audioBlob || audioBlob.size === 0) {
-      console.error('Invalid audio blob:', audioBlob);
+      setError('Invalid audio blob. Please record audio again.');
       return;
     }
 
@@ -55,8 +56,8 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioBlob, title, align }) =>
         audioRef.current.pause(); // Pause playback
       } else {
         audioRef.current.play().catch((error) => {
+          setError('Error playing audio. Please try Google Chrome or another browser.');
           console.error('Error playing audio:', error);
-          alert('Your browser does not support this audio format. Please try Google Chrome.');
         }); // Start playback
       }
       setIsPlaying(!isPlaying); // Toggle playback state
@@ -77,8 +78,8 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioBlob, title, align }) =>
       document.body.removeChild(link); // Remove the link from the DOM
       URL.revokeObjectURL(url); // Release the object URL to free up memory
     } catch (error) {
+      setError('Failed to convert the audio to MP3. Please try again.');
       console.error('Error converting audio:', error);
-      alert('Failed to convert the audio to MP3. Please try again.');
     }
   };
 
@@ -93,6 +94,9 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioBlob, title, align }) =>
     <div className={`audio-player ${align}`}>
       {/* Title */}
       <h3>{title}</h3>
+
+      {/* Error Message */}
+      {error && <p className="error-message">{error}</p>}
 
       {/* Audio element */}
       <audio ref={audioRef} src={audioUrl} /> {/* Hidden audio element */}
