@@ -101,19 +101,14 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioBlob, title, align }) =>
       {/* Audio element */}
       <audio ref={audioRef} src={audioUrl} /> {/* Hidden audio element */}
 
-      {/* Play/Pause Button */}
-      <button className="play-pause-button" onClick={handlePlayPause}>
-        {isPlaying ? <FaPause size={24} /> : <FaPlay size={24} />}
-      </button>
-
-      {/* Live Waveform */}
+      {/* Waveform */}
       {audioRef.current && (
         <div className="waveform-container">
           <AudioVisualizer
             blob={audioBlob}
             currentTime={currentTime}
             width={400} // Width of the waveform
-            height={64} // Height of the waveform
+            height={48} // Reduced height of the waveform
             barWidth={3} // Width of each bar in the waveform
             gap={1} // Gap between bars
             barColor="#7c3aed" // Color of the waveform bars
@@ -121,10 +116,18 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioBlob, title, align }) =>
         </div>
       )}
 
-      {/* Download Button */}
-      <button className="download-button" onClick={handleDownload}>
-        <FaDownload size={24} />
-      </button>
+      {/* Buttons Container */}
+      <div className="buttons-container">
+        {/* Play/Pause Button */}
+        <button className="play-pause-button" onClick={handlePlayPause}>
+          {isPlaying ? <FaPause size={20} /> : <FaPlay size={20} />}
+        </button>
+
+        {/* Download Button */}
+        <button className="download-button" onClick={handleDownload}>
+          <FaDownload size={20} />
+        </button>
+      </div>
     </div>
   );
 };

@@ -9,17 +9,30 @@ interface EnhancedWindowProps {
 }
 
 const EnhancedWindow: React.FC<EnhancedWindowProps> = ({ audioBlob, onReset }) => {
+  // Handle small microphone button click
+  const handleMicrophoneClick = () => {
+    const confirmReset = window.confirm(
+      'Are you sure you want to reset? Your current progress will be lost.'
+    );
+    if (confirmReset) {
+      onReset(); // Reset the app
+    }
+  };
+
   return (
     <div className="enhanced-window">
-      {/* Vanilla Audio Player */}
-      <AudioPlayer audioBlob={audioBlob} title="Vanilla Audio" align="right" />
+      {/* Audio Players Container */}
+      <div className="audio-players-container">
+        {/* Vanilla Audio Player (Higher, like a sent message) */}
+        <AudioPlayer audioBlob={audioBlob} title="Vanilla Audio" align="right" />
 
-      {/* Enhanced Audio Player */}
-      <AudioPlayer audioBlob={audioBlob} title="Enhanced Audio" align="left" />
+        {/* Enhanced Audio Player (Lower, like a received message) */}
+        <AudioPlayer audioBlob={audioBlob} title="Enhanced Audio" align="left" />
+      </div>
 
-      {/* Centered Microphone Button */}
+      {/* Centered Microphone Button at the Bottom */}
       <div className="centered-microphone-button">
-        <MicrophoneButton onClick={onReset} size="small" />
+        <MicrophoneButton onClick={handleMicrophoneClick} size="small" />
       </div>
     </div>
   );

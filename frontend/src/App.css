@@ -5,8 +5,7 @@
   justify-content: center;
   width: 100vw;
   height: 100vh;
-  background-color: #f3f4f6;
-  /* Light gray background */
+  background-color: #f3f4f6; /* Light gray background */
 }
 
 /* Microphone Circle */
@@ -16,14 +15,10 @@
   justify-content: center;
   width: 30vmin;
   height: 30vmin;
-  background-color: #7c3aed;
-  /* Purple background */
-  border-radius: 50%;
-  /* Makes it a circle */
-  cursor: pointer;
-  /* Indicates it's clickable */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  /* Subtle shadow */
+  background-color: #7c3aed; /* Purple background */
+  border-radius: 50%; /* Makes it a circle */
+  cursor: pointer; /* Indicates it's clickable */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
 }
 
 /* Small Microphone Circle */
@@ -31,52 +26,38 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 15vmin;
-  /* Smaller size */
-  height: 15vmin;
-  /* Smaller size */
-  background-color: #7c3aed;
-  /* Purple background */
-  border-radius: 50%;
-  /* Makes it a circle */
-  cursor: pointer;
-  /* Indicates it's clickable */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  /* Subtle shadow */
-  margin-top: 20px;
-  /* Space between submit button and microphone */
+  width: 15vmin; /* Smaller size */
+  height: 15vmin; /* Smaller size */
+  background-color: #7c3aed; /* Purple background */
+  border-radius: 50%; /* Makes it a circle */
+  cursor: pointer; /* Indicates it's clickable */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  margin-top: 20px; /* Space between submit button and microphone */
 }
 
 /* Microphone Icon */
 .microphone-icon {
-  font-size: 20vmin;
-  /* Size of the microphone icon */
-  color: white;
-  /* White color */
+  font-size: 20vmin; /* Size of the microphone icon */
+  color: white; /* White color */
 }
 
 /* Small Microphone Icon */
 .small-microphone-icon {
-  font-size: 10vmin;
-  /* Smaller size */
-  color: white;
-  /* White color */
+  font-size: 10vmin; /* Smaller size */
+  color: white; /* White color */
 }
 
 /* Audio Control Bar */
 .audio-control-bar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  /* Space items evenly */
+  justify-content: space-between; /* Space items evenly */
   padding: 16px;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 80%;
-  /* Make the control bar wider */
-  max-width: 600px;
-  /* Set a maximum width */
+  width: 80%; /* Make the control bar wider */
+  max-width: 600px; /* Set a maximum width */
 }
 
 /* Left Section (Upload Icon and Seconds) */
@@ -84,43 +65,34 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  flex-shrink: 0;
-  /* Prevent shrinking */
+  flex-shrink: 0; /* Prevent shrinking */
 }
 
 /* Seconds Text */
 .left-section span {
-  color: #7c3aed;
-  /* Purple color for the seconds text */
+  color: #7c3aed; /* Purple color for the seconds text */
   font-size: 16px;
   font-weight: bold;
 }
 
 /* Waveform Container */
 .waveform {
-  flex: 1;
-  /* Take up remaining space */
-  height: 64px;
-  /* Default height */
-  margin: 0 16px;
-  /* Add equal margin on both sides */
-  min-width: 100px;
-  /* Ensure the container is wide enough */
+  flex: 1; /* Take up remaining space */
+  height: 64px; /* Default height */
+  margin: 0 16px; /* Add equal margin on both sides */
+  min-width: 100px; /* Ensure the container is wide enough */
   display: flex;
-  align-items: center;
-  /* Center vertically */
+  align-items: center; /* Center vertically */
 }
 
 /* Visualizer Container */
 .visualizer-container {
-  width: 100%;
-  /* Fill the waveform container */
-  overflow: hidden;
-  /* Ensure the visualizer stays within the container */
+  width: 100%; /* Fill the waveform container */
+  overflow: hidden; /* Ensure the visualizer stays within the container */
 }
 
 /* Force the visualizer to fill the container */
-.visualizer-container>* {
+.visualizer-container > * {
   width: 100%;
 }
 
@@ -128,10 +100,8 @@
 .icon-buttons {
   display: flex;
   align-items: center;
-  gap: 16px;
-  /* Space between play/pause and trash icons */
-  flex-shrink: 0;
-  /* Prevent shrinking */
+  gap: 16px; /* Space between play/pause and trash icons */
+  flex-shrink: 0; /* Prevent shrinking */
 }
 
 /* Icon Button */
@@ -169,7 +139,6 @@
   0% {
     transform: rotate(0deg);
   }
-
   100% {
     transform: rotate(360deg);
   }
@@ -187,48 +156,38 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  /* Align content to the top */
+  justify-content: flex-start; /* Align content to the top */
   width: 100%;
-  height: 70vh;
-  /* Take up 70% of the viewport height */
-  margin-top: 2vh;
-  /* Reduced gap at the top */
+  height: 70vh; /* Take up 70% of the viewport height */
+  margin-top: 2vh; /* Reduced gap at the top */
 }
 
 /* Textbox */
 .textbox {
   width: 80%;
   max-width: 600px;
-  height: 100%;
-  /* Take up the full height of the container */
+  height: 100%; /* Take up the full height of the container */
   padding: 16px;
   font-size: 16px;
-  border: 2px solid #7c3aed;
-  /* Purple border */
+  border: 2px solid #7c3aed; /* Purple border */
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  resize: vertical;
-  /* Allow vertical resizing */
-  outline: none;
-  /* Remove default outline */
+  resize: vertical; /* Allow vertical resizing */
+  outline: none; /* Remove default outline */
 }
 
 .textbox:focus {
-  border-color: #4F46E5;
-  /* Change border color on focus */
+  border-color: #4f46e5; /* Change border color on focus */
 }
 
 /* Submit Button */
 .submit-button {
-  margin-top: 10px;
-  /* Reduced space between textbox and button */
+  margin-top: 10px; /* Reduced space between textbox and button */
   padding: 12px 24px;
   font-size: 16px;
   font-weight: bold;
   color: white;
-  background-color: #7c3aed;
-  /* Purple background */
+  background-color: #7c3aed; /* Purple background */
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -237,8 +196,7 @@
 }
 
 .submit-button:hover {
-  background-color: #6d28d9;
-  /* Darker purple on hover */
+  background-color: #6d28d9; /* Darker purple on hover */
 }
 
 /* Audio Player Container */
@@ -246,41 +204,22 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 16px;
-  padding: 16px;
+  gap: 8px; /* Reduce gap between elements */
+  padding: 12px; /* Reduce padding */
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 400px;
-  /* Adjust as needed */
-  margin: 16px 0;
-  /* Add margin between players */
+  max-width: 400px; /* Adjust as needed */
+  margin: 16px 0; /* Add margin between players */
+  height: auto; /* Let the height adjust based on content */
 }
 
-/* Left-aligned Audio Player */
-.audio-player.left {
-  align-self: flex-start;
-  /* Align to the left */
-  margin-right: auto;
-  /* Push to the left */
-}
-
-/* Right-aligned Audio Player */
-.audio-player.right {
-  align-self: flex-end;
-  /* Align to the right */
-  margin-left: auto;
-  /* Push to the right */
-}
-
-/* Title */
-.audio-player h3 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: bold;
-  color: #7c3aed;
-  /* Purple color */
+/* Buttons Container */
+.buttons-container {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Space between buttons */
 }
 
 /* Play/Pause Button */
@@ -288,9 +227,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 12px;
-  background-color: #7c3aed;
-  /* Purple background */
+  padding: 8px; /* Reduce padding */
+  background-color: #7c3aed; /* Purple background */
   border: none;
   border-radius: 50%;
   cursor: pointer;
@@ -299,18 +237,7 @@
 }
 
 .play-pause-button:hover {
-  background-color: #6d28d9;
-  /* Darker purple on hover */
-}
-
-/* Waveform Container */
-.waveform-container {
-  flex: 1;
-  /* Take up remaining space */
-  height: 64px;
-  /* Height of the waveform */
-  width: 100%;
-  /* Full width */
+  background-color: #6d28d9; /* Darker purple on hover */
 }
 
 /* Download Button */
@@ -318,9 +245,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 12px;
-  background-color: #10b981;
-  /* Green background */
+  padding: 8px; /* Reduce padding */
+  background-color: #10b981; /* Green background */
   border: none;
   border-radius: 50%;
   cursor: pointer;
@@ -329,39 +255,100 @@
 }
 
 .download-button:hover {
-  background-color: #059669;
-  /* Darker green on hover */
+  background-color: #059669; /* Darker green on hover */
+}
+
+/* Waveform Container */
+.waveform-container {
+  flex: 1; /* Take up remaining space */
+  height: 48px; /* Reduce height of the waveform */
+  width: 100%; /* Full width */
+}
+
+/* Download Button */
+.download-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  background-color: #10b981; /* Green background */
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+}
+
+.download-button:hover {
+  background-color: #059669; /* Darker green on hover */
+}
+
+/* Enhanced Window */
+.enhanced-window {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* Align content to the top */
+  width: 100%;
+  height: 80vh;
+  position: relative;
+  padding-top: 20px; /* Add some padding at the top */
+}
+
+/* Audio Players Container */
+.audio-players-container {
+  display: flex;
+  flex-direction: column; /* Stack audio players vertically */
+  align-items: flex-end; /* Align players to the right (like sent messages) */
+  width: 80%; /* Adjust width as needed */
+  max-width: 1200px; /* Set a maximum width */
+  margin: 0 auto; /* Center the container */
+  gap: 20px; /* Add space between audio players */
+}
+
+/* Vanilla Audio Player (Higher, like a sent message) */
+.audio-player.right {
+  align-self: flex-end; /* Align to the right */
+}
+
+/* Enhanced Audio Player (Lower, like a received message) */
+.audio-player.left {
+  align-self: flex-start; /* Align to the left */
+}
+
+/* Centered Microphone Button at the Bottom */
+.centered-microphone-button {
+  position: absolute;
+  bottom: 20px; /* Position at the bottom */
+  left: 50%;
+  transform: translateX(-50%); /* Center horizontally */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Responsive Adjustments */
 @media (max-width: 600px) {
   .audio-control-bar {
-    padding: 12px;
-    /* Reduce padding for smaller screens */
+    padding: 12px; /* Reduce padding for smaller screens */
   }
 
   .waveform {
-    margin: 0 8px;
-    /* Reduce margin for smaller screens */
-    min-width: 80px;
-    /* Smaller minimum width for mobile */
+    margin: 0 8px; /* Reduce margin for smaller screens */
+    min-width: 80px; /* Smaller minimum width for mobile */
   }
 
   .left-section span {
-    font-size: 14px;
-    /* Smaller font size for seconds text */
+    font-size: 14px; /* Smaller font size for seconds text */
   }
 
   .icon-buttons {
-    gap: 12px;
-    /* Reduce gap between icons */
+    gap: 12px; /* Reduce gap between icons */
   }
 
   .textbox {
-    width: 90%;
-    /* Make textbox wider on smaller screens */
-    font-size: 14px;
-    /* Smaller font size for mobile */
+    width: 90%; /* Make textbox wider on smaller screens */
+    font-size: 14px; /* Smaller font size for mobile */
   }
 
   .submit-button {
@@ -370,75 +357,22 @@
   }
 
   .small-microphone-circle {
-    width: 12vmin;
-    /* Smaller size for mobile */
-    height: 12vmin;
-    /* Smaller size for mobile */
+    width: 12vmin; /* Smaller size for mobile */
+    height: 12vmin; /* Smaller size for mobile */
   }
 
   .small-microphone-icon {
-    font-size: 8vmin;
-    /* Smaller size for mobile */
+    font-size: 8vmin; /* Smaller size for mobile */
   }
 
   /* Responsive Adjustments for Audio Player */
   .audio-player {
-    padding: 12px;
-    /* Reduce padding for smaller screens */
-    gap: 12px;
-    /* Reduce gap between buttons */
+    padding: 12px; /* Reduce padding for smaller screens */
+    gap: 12px; /* Reduce gap between buttons */
   }
 
   .play-pause-button,
   .download-button {
-    padding: 10px;
-    /* Smaller padding for buttons */
+    padding: 10px; /* Smaller padding for buttons */
   }
-
-  /* Add to App.css */
-  .microphone-circle.recording {
-    background-color: #ef4444;
-    /* Red color for active recording */
-    animation: pulse 1.5s infinite;
-  }
-
-  @keyframes pulse {
-    0% {
-      transform: scale(1);
-    }
-
-    50% {
-      transform: scale(1.1);
-    }
-
-    100% {
-      transform: scale(1);
-    }
-  }
-
-  .error-message {
-    color: #ef4444;
-    font-size: 14px;
-    margin-top: 8px;
-    text-align: center;
-  }
-
-  /* Add to App.css */
-  .enhanced-window {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100vh;
-    position: relative;
-  }
-
-  .centered-microphone-button {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
 }
