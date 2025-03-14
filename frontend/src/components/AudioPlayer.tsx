@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { FaPlay, FaPause, FaDownload } from 'react-icons/fa';
 import { AudioVisualizer } from 'react-audio-visualize';
 import { WhatsappShareButton, WhatsappIcon } from 'react-share';
-import './App.css';
+import '../App.css';
 
 interface AudioPlayerProps {
   audioBlob: Blob; // Audio blob to play (non-null)

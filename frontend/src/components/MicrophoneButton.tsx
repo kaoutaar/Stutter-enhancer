@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaMicrophone } from 'react-icons/fa';
-import './App.css';
+import '../App.css';
 
 interface MicrophoneButtonProps {
   onClick: () => void;

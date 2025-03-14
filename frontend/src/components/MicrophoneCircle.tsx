@@ -5,7 +5,7 @@ import RecordingView from './RecordingView';
 import ProcessingView from './ProcessingView';
 import TextboxView from './TextboxView';
 import EnhancedView from './EnhancedView';
-import './App.css';
+import '../App.css';
 
 const MicrophoneCircle: React.FC = () => {
   const {

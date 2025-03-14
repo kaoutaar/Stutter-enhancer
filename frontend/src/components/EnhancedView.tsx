@@ -1,6 +1,4 @@
 import React, { lazy, Suspense } from 'react';
-import AudioPlayer from './AudioPlayer';
-import MicrophoneButton from './MicrophoneButton';
 
 const EnhancedWindow = lazy(() => import('./EnhancedWindow'));
 

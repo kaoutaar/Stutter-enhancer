@@ -1,5 +1,5 @@
 import React from 'react';
-import MicrophoneCircle from './MicrophoneCircle';
+import MicrophoneCircle from './components/MicrophoneCircle';
 import './App.css'; // Import the CSS file
 
 const App: React.FC = () => {

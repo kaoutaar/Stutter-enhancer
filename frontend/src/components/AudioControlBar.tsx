@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaUpload, FaPause, FaTrash, FaPlay } from 'react-icons/fa';
 import { LiveAudioVisualizer } from 'react-audio-visualize';
-import './App.css';
+import '../App.css';
 
 interface AudioControlBarProps {
   mediaRecorder: MediaRecorder | undefined; // MediaRecorder instance
