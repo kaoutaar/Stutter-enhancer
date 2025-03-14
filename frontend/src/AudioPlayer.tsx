@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { FaPlay, FaPause, FaDownload } from 'react-icons/fa';
 import { AudioVisualizer } from 'react-audio-visualize';
+import { WhatsappShareButton, WhatsappIcon } from 'react-share';
 import './App.css';
 
 interface AudioPlayerProps {
@@ -127,6 +128,16 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioBlob, title, align }) =>
         <button className="download-button" onClick={handleDownload}>
           <FaDownload size={20} />
         </button>
+
+        {/* Share on WhatsApp Button */}
+        <WhatsappShareButton
+          url={audioUrl} // URL of the audio file
+          title="Check out this enhanced audio!"
+          separator=" "
+          className="share-button"
+        >
+          <WhatsappIcon size={32} round />
+        </WhatsappShareButton>
       </div>
     </div>
   );
