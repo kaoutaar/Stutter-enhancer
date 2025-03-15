@@ -22,6 +22,7 @@ const MicrophoneCircle: React.FC = () => {
 
   const [taskId, setTaskId] = useState<string | null>(null);
   const [transcribedText, setTranscribedText] = useState<string>('');
+  const [vanillaAudioUrl, setVanillaAudioUrl] = useState<string | null>(null);
   const [enhancedAudioUrl, setEnhancedAudioUrl] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [isProcessingComplete, setIsProcessingComplete] = useState(false);
@@ -31,13 +32,14 @@ const MicrophoneCircle: React.FC = () => {
 
   // Reset the app to its initial state
   const resetApp = () => {
-    stopRecording();
+    stopRecording(); // Stop any ongoing recording
     setIsUploading(false);
     setIsProcessingComplete(false);
     setShowAudioController(false);
     setTranscribedText('');
     setShowEnhancedWindow(false);
     setTaskId(null);
+    setVanillaAudioUrl(null);
     setEnhancedAudioUrl(null);
     setError(null);
   };
@@ -83,8 +85,11 @@ const MicrophoneCircle: React.FC = () => {
       await submitCorrectedText(taskId, text);
 
       // Step 4: Poll for enhanced audio (stubbed)
-      const audioUrl = await getEnhancedAudio(taskId);
-      setEnhancedAudioUrl(audioUrl);
+      const enhancedAudioUrl = await getEnhancedAudio(taskId);
+
+      // Step 5: Set both Vanilla and Enhanced audio URLs
+      setVanillaAudioUrl(URL.createObjectURL(recordingBlob!)); // Vanilla audio (original recording)
+      setEnhancedAudioUrl(enhancedAudioUrl); // Enhanced audio (processed)
       setShowEnhancedWindow(true);
     } catch (err) {
       setError('Failed to enhance audio. Please try again.');
@@ -117,7 +122,7 @@ const MicrophoneCircle: React.FC = () => {
           onStartRecording={handleStartNewRecording}
           onUpload={handleUpload}
           onPauseResume={togglePauseResume}
-          onStop={stopRecording}
+          onStop={resetApp} // Pass resetApp to handle trashcan icon click
         />
       )}
 
@@ -135,8 +140,13 @@ const MicrophoneCircle: React.FC = () => {
       )}
 
       {/* Enhanced View */}
-      {showEnhancedWindow && enhancedAudioUrl && !error && (
-        <EnhancedView audioUrl={enhancedAudioUrl} onReset={resetApp} />
+      {showEnhancedWindow && vanillaAudioUrl && enhancedAudioUrl && (
+        <EnhancedView
+          vanillaAudioUrl={vanillaAudioUrl}
+          enhancedAudioUrl={enhancedAudioUrl}
+          onReset={resetApp}
+          vanillaAudioBlob={recordingBlob} // Pass the Vanilla audio blob
+        />
       )}
 
       {/* Error Message */}
