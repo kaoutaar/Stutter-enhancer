@@ -1,7 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { FaPlay, FaPause, FaDownload } from 'react-icons/fa';
-import { AudioVisualizer } from 'react-audio-visualize'; // For the live waveform
-import './App.css';
+import { AudioVisualizer } from 'react-audio-visualize';
+import { WhatsappShareButton, WhatsappIcon } from 'react-share';
+import '../App.css';
 
 interface AudioPlayerProps {
   audioBlob: Blob; // Audio blob to play (non-null)
@@ -14,11 +15,12 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioBlob, title, align }) =>
   const audioRef = useRef<HTMLAudioElement>(null); // Reference to the audio element
   const [audioUrl, setAudioUrl] = useState<string>(''); // Store the stable audio URL
   const [currentTime, setCurrentTime] = useState(0); // Track current playback time
+  const [error, setError] = useState<string | null>(null); // Track errors
 
   // Create a stable URL for the audio blob
   useEffect(() => {
     if (!audioBlob || audioBlob.size === 0) {
-      console.error('Invalid audio blob:', audioBlob);
+      setError('Invalid audio blob. Please record audio again.');
       return;
     }
 
@@ -55,8 +57,8 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioBlob, title, align }) =>
         audioRef.current.pause(); // Pause playback
       } else {
         audioRef.current.play().catch((error) => {
+          setError('Error playing audio. Please try Google Chrome or another browser.');
           console.error('Error playing audio:', error);
-          alert('Your browser does not support this audio format. Please try Google Chrome.');
         }); // Start playback
       }
       setIsPlaying(!isPlaying); // Toggle playback state
@@ -77,8 +79,8 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioBlob, title, align }) =>
       document.body.removeChild(link); // Remove the link from the DOM
       URL.revokeObjectURL(url); // Release the object URL to free up memory
     } catch (error) {
+      setError('Failed to convert the audio to MP3. Please try again.');
       console.error('Error converting audio:', error);
-      alert('Failed to convert the audio to MP3. Please try again.');
     }
   };
 
@@ -94,22 +96,20 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioBlob, title, align }) =>
       {/* Title */}
       <h3>{title}</h3>
 
+      {/* Error Message */}
+      {error && <p className="error-message">{error}</p>}
+
       {/* Audio element */}
       <audio ref={audioRef} src={audioUrl} /> {/* Hidden audio element */}
 
-      {/* Play/Pause Button */}
-      <button className="play-pause-button" onClick={handlePlayPause}>
-        {isPlaying ? <FaPause size={24} /> : <FaPlay size={24} />}
-      </button>
-
-      {/* Live Waveform */}
+      {/* Waveform */}
       {audioRef.current && (
         <div className="waveform-container">
           <AudioVisualizer
             blob={audioBlob}
             currentTime={currentTime}
             width={400} // Width of the waveform
-            height={64} // Height of the waveform
+            height={48} // Reduced height of the waveform
             barWidth={3} // Width of each bar in the waveform
             gap={1} // Gap between bars
             barColor="#7c3aed" // Color of the waveform bars
@@ -117,10 +117,28 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioBlob, title, align }) =>
         </div>
       )}
 
-      {/* Download Button */}
-      <button className="download-button" onClick={handleDownload}>
-        <FaDownload size={24} />
-      </button>
+      {/* Buttons Container */}
+      <div className="buttons-container">
+        {/* Play/Pause Button */}
+        <button className="play-pause-button" onClick={handlePlayPause}>
+          {isPlaying ? <FaPause size={20} /> : <FaPlay size={20} />}
+        </button>
+
+        {/* Download Button */}
+        <button className="download-button" onClick={handleDownload}>
+          <FaDownload size={20} />
+        </button>
+
+        {/* Share on WhatsApp Button */}
+        <WhatsappShareButton
+          url={audioUrl} // URL of the audio file
+          title="Check out this enhanced audio!"
+          separator=" "
+          className="share-button"
+        >
+          <WhatsappIcon size={32} round />
+        </WhatsappShareButton>
+      </div>
     </div>
   );
 };

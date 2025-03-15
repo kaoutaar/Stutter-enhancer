@@ -1,15 +1,14 @@
 import React from 'react';
 import MicrophoneButton from './MicrophoneButton';
-import './App.css';
 
-interface TextboxWithSubmitProps {
+interface TextboxViewProps {
   textboxValue: string;
   onTextboxChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onSubmit: () => void;
   onMicrophoneClick: () => void;
 }
 
-const TextboxWithSubmit: React.FC<TextboxWithSubmitProps> = ({
+const TextboxView: React.FC<TextboxViewProps> = ({
   textboxValue,
   onTextboxChange,
   onSubmit,
@@ -22,16 +21,15 @@ const TextboxWithSubmit: React.FC<TextboxWithSubmitProps> = ({
         placeholder="Enter your text here..."
         rows={10}
         cols={50}
-        value={textboxValue} // Bind the value to the textbox
-        onChange={onTextboxChange} // Allow editing
+        value={textboxValue}
+        onChange={onTextboxChange}
       />
       <button className="submit-button" onClick={onSubmit}>
         Submit
       </button>
-      {/* Small Microphone Circle */}
       <MicrophoneButton onClick={onMicrophoneClick} size="small" />
     </div>
   );
 };
 
-export default TextboxWithSubmit;
+export default TextboxView;
