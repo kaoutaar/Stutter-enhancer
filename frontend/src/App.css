@@ -1,4 +1,21 @@
-/* Center the container in the middle of the screen */
+/* Disable text selection and text editing cursor */
+body {
+  user-select: none; /* Disable text selection */
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+}
+
+/* Ensure input fields and textareas are still editable */
+input,
+textarea {
+  user-select: text; /* Allow text selection in input fields and textareas */
+  -webkit-user-select: text; /* Safari */
+  -moz-user-select: text; /* Firefox */
+  -ms-user-select: text; /* Internet Explorer/Edge */
+}
+
+/* Rest of your existing CSS styles */
 .container {
   display: flex;
   align-items: center;
