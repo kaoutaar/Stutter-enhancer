@@ -482,3 +482,43 @@
   }
 
 }
+
+/* Error Message Container */
+.error-message-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  margin: 20px auto;
+}
+
+/* Error Message Text */
+.error-message {
+  color: #ef4444; /* Red color for error text */
+  font-size: 16px;
+  text-align: center;
+}
+
+/* Reset Button */
+.reset-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background-color: #7c3aed; /* Purple background */
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+}
+
+.reset-button:hover {
+  background-color: #6d28d9; /* Darker purple on hover */
+}

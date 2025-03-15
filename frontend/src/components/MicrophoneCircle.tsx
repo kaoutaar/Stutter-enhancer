@@ -5,6 +5,7 @@ import RecordingView from './RecordingView';
 import ProcessingView from './ProcessingView';
 import TextboxView from './TextboxView';
 import EnhancedView from './EnhancedView';
+import ErrorMessage from './ErrorMessage';
 import '../App.css';
 
 const MicrophoneCircle: React.FC = () => {
@@ -19,12 +20,14 @@ const MicrophoneCircle: React.FC = () => {
     mediaRecorder,
   } = useAudioRecorder();
 
+  const [taskId, setTaskId] = useState<string | null>(null);
+  const [transcribedText, setTranscribedText] = useState<string>('');
+  const [enhancedAudioUrl, setEnhancedAudioUrl] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [isProcessingComplete, setIsProcessingComplete] = useState(false);
   const [showAudioController, setShowAudioController] = useState(false);
-  const [textboxValue, setTextboxValue] = useState('');
   const [showEnhancedWindow, setShowEnhancedWindow] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Reset the app to its initial state
   const resetApp = () => {
@@ -32,9 +35,11 @@ const MicrophoneCircle: React.FC = () => {
     setIsUploading(false);
     setIsProcessingComplete(false);
     setShowAudioController(false);
-    setTextboxValue('');
+    setTranscribedText('');
     setShowEnhancedWindow(false);
-    setIsProcessing(false);
+    setTaskId(null);
+    setEnhancedAudioUrl(null);
+    setError(null);
   };
 
   // Handle starting a new recording
@@ -45,24 +50,48 @@ const MicrophoneCircle: React.FC = () => {
   };
 
   // Handle upload from AudioControlBar
-  const handleUpload = (blob: Blob) => {
+  const handleUpload = async (blob: Blob) => {
     setIsUploading(true);
-    setTimeout(() => {
-      setIsUploading(false);
+    setError(null);
+
+    try {
+      // Step 1: Submit audio to the backend
+      const taskId = await submitAudio(blob);
+      setTaskId(taskId);
+
+      // Step 2: Poll for transcribed text
+      const text = await getTranscribedText(taskId);
+      setTranscribedText(text);
       setIsProcessingComplete(true);
-      populateTextbox();
-      console.log('Audio Blob:', blob);
-      console.log('Audio URL:', URL.createObjectURL(blob));
-    }, 2000);
+    } catch (err) {
+      setError('Failed to process audio. Please try again.');
+      console.error(err);
+    } finally {
+      setIsUploading(false);
+    }
   };
 
-  // Handle submit button click
-  const handleSubmit = () => {
-    setIsProcessing(true);
-    setTimeout(() => {
-      setIsProcessing(false);
+  // Handle submit button click in TextboxView
+  const handleSubmitText = async (text: string) => {
+    if (!taskId) return;
+
+    setIsUploading(true);
+    setError(null);
+
+    try {
+      // Step 3: Submit corrected text to the backend
+      await submitCorrectedText(taskId, text);
+
+      // Step 4: Poll for enhanced audio
+      const audioUrl = await getEnhancedAudio(taskId);
+      setEnhancedAudioUrl(audioUrl);
       setShowEnhancedWindow(true);
-    }, 2000);
+    } catch (err) {
+      setError('Failed to enhance audio. Please try again.');
+      console.error(err);
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   // Handle small microphone circle click
@@ -72,35 +101,13 @@ const MicrophoneCircle: React.FC = () => {
     setShowAudioController(true);
   };
 
-  // Populate the textbox with random text
-  const populateTextbox = () => {
-    const romeoAndJulietText = `
-      Two households, both alike in dignity,
-      In fair Verona, where we lay our scene,
-      From ancient grudge break to new mutiny,
-      Where civil blood makes civil hands unclean.
-      From forth the fatal loins of these two foes
-      A pair of star-cross'd lovers take their life;
-      Whose misadventured piteous overthrows
-      Do with their death bury their parents' strife.
-      The fearful passage of their death-mark'd love,
-      And the continuance of their parents' rage,
-      Which, but their children's end, nought could remove,
-      Is now the two hours' traffic of our stage;
-      The which if you with patient ears attend,
-      What here shall miss, our toil shall strive to mend.
-    `;
-    const cleanedText = romeoAndJulietText.replace(/\s+/g, ' ').trim();
-    setTextboxValue(cleanedText);
-  };
-
   return (
     <div className="container">
       {/* Stutter Enhancer Title */}
       <StutterEnhancerTitle />
 
       {/* Recording View */}
-      {!isUploading && !isProcessingComplete && !showEnhancedWindow && (
+      {!isUploading && !isProcessingComplete && !showEnhancedWindow && !error && (
         <RecordingView
           isRecording={isRecording}
           showAudioController={showAudioController}
@@ -115,24 +122,82 @@ const MicrophoneCircle: React.FC = () => {
       )}
 
       {/* Processing View */}
-      <ProcessingView isProcessing={isUploading || isProcessing} />
+      <ProcessingView isProcessing={isUploading} />
 
       {/* Textbox View */}
-      {isProcessingComplete && !showEnhancedWindow && (
+      {isProcessingComplete && !showEnhancedWindow && !error && (
         <TextboxView
-          textboxValue={textboxValue}
-          onTextboxChange={(e) => setTextboxValue(e.target.value)}
-          onSubmit={handleSubmit}
+          textboxValue={transcribedText}
+          onTextboxChange={(e) => setTranscribedText(e.target.value)}
+          onSubmit={() => handleSubmitText(transcribedText)}
           onMicrophoneClick={handleSmallMicrophoneClick}
         />
       )}
 
       {/* Enhanced View */}
-      {showEnhancedWindow && recordingBlob && (
-        <EnhancedView audioBlob={recordingBlob} onReset={resetApp} />
+      {showEnhancedWindow && enhancedAudioUrl && !error && (
+        <EnhancedView audioUrl={enhancedAudioUrl} onReset={resetApp} />
       )}
+
+      {/* Error Message */}
+      {error && <ErrorMessage message={error} onReset={resetApp} />}
     </div>
   );
+};
+
+// Helper function to submit audio
+const submitAudio = async (audioBlob: Blob): Promise<string> => {
+  const formData = new FormData();
+  formData.append('file', audioBlob, 'recording.webm');
+
+  const response = await fetch('/enhance-audio/', {
+    method: 'POST',
+    body: formData,
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to submit audio');
+  }
+
+  const data = await response.json();
+  return data.task_id; // Return the task ID
+};
+
+// Helper function to get transcribed text
+const getTranscribedText = async (taskId: string): Promise<string> => {
+  const response = await fetch(`/enhance-audio/text/${taskId}`);
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch transcribed text');
+  }
+
+  const data = await response.json();
+  return data.text; // Return the transcribed text
+};
+
+// Helper function to submit corrected text
+const submitCorrectedText = async (taskId: string, text: string): Promise<void> => {
+  const response = await fetch(`/enhance-audio/text/${taskId}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text }),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to submit corrected text');
+  }
+};
+
+// Helper function to get enhanced audio
+const getEnhancedAudio = async (taskId: string): Promise<string> => {
+  const response = await fetch(`/enhance-audio/audio/${taskId}`);
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch enhanced audio');
+  }
+
+  const data = await response.json();
+  return data.file_url; // Return the URL to download the enhanced audio
 };
 
 export default MicrophoneCircle;

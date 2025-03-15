@@ -1,18 +1,34 @@
-import React, { lazy, Suspense } from 'react';
-
-const EnhancedWindow = lazy(() => import('./EnhancedWindow'));
+import React from 'react';
+import AudioPlayer from './AudioPlayer';
+import '../App.css';
+import MicrophoneButton from './MicrophoneButton';
 
 interface EnhancedViewProps {
-  audioBlob: Blob;
-  onReset: () => void;
+  audioUrl: string; // URL of the enhanced audio file
+  onReset: () => void; // Callback to reset the app
 }
 
-const EnhancedView: React.FC<EnhancedViewProps> = ({ audioBlob, onReset }) => {
+const EnhancedWindow: React.FC<EnhancedViewProps> = ({ audioUrl, onReset }) => {
+  const handleMicrophoneClick = () => {
+    const confirmReset = window.confirm(
+      'Are you sure you want to reset? Your current progress will be lost.'
+    );
+    if (confirmReset) {
+      onReset(); // Reset the app
+    }
+  };
+
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <EnhancedWindow audioBlob={audioBlob} onReset={onReset} />
-    </Suspense>
+    <div className="enhanced-window">
+      {/* Audio Player */}
+      <AudioPlayer audioUrl={audioUrl} title="Enhanced Audio" align="left" />
+
+      {/* Centered Microphone Button at the Bottom */}
+      <div className="centered-microphone-button">
+        <MicrophoneButton onClick={handleMicrophoneClick} size="small" />
+      </div>
+    </div>
   );
 };
 
-export default EnhancedView;
+export default EnhancedWindow;
