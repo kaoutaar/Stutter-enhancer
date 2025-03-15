@@ -4,11 +4,11 @@ import '../App.css';
 import MicrophoneButton from './MicrophoneButton';
 
 interface EnhancedWindowProps {
-  audioBlob: Blob; // Audio blob from the previous screen (non-null)
+  audioUrl: string; // URL of the enhanced audio file
   onReset: () => void; // Callback to reset the app
 }
 
-const EnhancedWindow: React.FC<EnhancedWindowProps> = ({ audioBlob, onReset }) => {
+const EnhancedWindow: React.FC<EnhancedWindowProps> = ({ audioUrl, onReset }) => {
   // Handle small microphone button click
   const handleMicrophoneClick = () => {
     const confirmReset = window.confirm(
@@ -24,10 +24,10 @@ const EnhancedWindow: React.FC<EnhancedWindowProps> = ({ audioBlob, onReset }) =
       {/* Audio Players Container */}
       <div className="audio-players-container">
         {/* Vanilla Audio Player (Higher, like a sent message) */}
-        <AudioPlayer audioBlob={audioBlob} title="Vanilla Audio" align="right" />
+        <AudioPlayer audioUrl={audioUrl} title="Vanilla Audio" align="right" />
 
         {/* Enhanced Audio Player (Lower, like a received message) */}
-        <AudioPlayer audioBlob={audioBlob} title="Enhanced Audio" align="left" />
+        <AudioPlayer audioUrl={audioUrl} title="Enhanced Audio" align="left" />
       </div>
 
       {/* Centered Microphone Button at the Bottom */}

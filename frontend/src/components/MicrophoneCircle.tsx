@@ -55,11 +55,11 @@ const MicrophoneCircle: React.FC = () => {
     setError(null);
 
     try {
-      // Step 1: Submit audio to the backend
+      // Step 1: Submit audio to the backend (stubbed)
       const taskId = await submitAudio(blob);
       setTaskId(taskId);
 
-      // Step 2: Poll for transcribed text
+      // Step 2: Poll for transcribed text (stubbed)
       const text = await getTranscribedText(taskId);
       setTranscribedText(text);
       setIsProcessingComplete(true);
@@ -79,10 +79,10 @@ const MicrophoneCircle: React.FC = () => {
     setError(null);
 
     try {
-      // Step 3: Submit corrected text to the backend
+      // Step 3: Submit corrected text to the backend (stubbed)
       await submitCorrectedText(taskId, text);
 
-      // Step 4: Poll for enhanced audio
+      // Step 4: Poll for enhanced audio (stubbed)
       const audioUrl = await getEnhancedAudio(taskId);
       setEnhancedAudioUrl(audioUrl);
       setShowEnhancedWindow(true);
@@ -145,59 +145,37 @@ const MicrophoneCircle: React.FC = () => {
   );
 };
 
-// Helper function to submit audio
+// Stubbed API calls
 const submitAudio = async (audioBlob: Blob): Promise<string> => {
-  const formData = new FormData();
-  formData.append('file', audioBlob, 'recording.webm');
+  // Simulate a delay (e.g., 2 seconds)
+  await new Promise((resolve) => setTimeout(resolve, 2000));
 
-  const response = await fetch('/enhance-audio/', {
-    method: 'POST',
-    body: formData,
-  });
-
-  if (!response.ok) {
-    throw new Error('Failed to submit audio');
-  }
-
-  const data = await response.json();
-  return data.task_id; // Return the task ID
+  // Return a mock task_id
+  return 'mock-task-id-12345';
 };
 
-// Helper function to get transcribed text
 const getTranscribedText = async (taskId: string): Promise<string> => {
-  const response = await fetch(`/enhance-audio/text/${taskId}`);
+  // Simulate a delay (e.g., 2 seconds)
+  await new Promise((resolve) => setTimeout(resolve, 2000));
 
-  if (!response.ok) {
-    throw new Error('Failed to fetch transcribed text');
-  }
-
-  const data = await response.json();
-  return data.text; // Return the transcribed text
+  // Return mock transcribed text
+  return 'This is a mock transcription of the audio.';
 };
 
-// Helper function to submit corrected text
 const submitCorrectedText = async (taskId: string, text: string): Promise<void> => {
-  const response = await fetch(`/enhance-audio/text/${taskId}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text }),
-  });
+  // Simulate a delay (e.g., 2 seconds)
+  await new Promise((resolve) => setTimeout(resolve, 2000));
 
-  if (!response.ok) {
-    throw new Error('Failed to submit corrected text');
-  }
+  // Simulate a successful response
+  console.log('Corrected text submitted:', text);
 };
 
-// Helper function to get enhanced audio
 const getEnhancedAudio = async (taskId: string): Promise<string> => {
-  const response = await fetch(`/enhance-audio/audio/${taskId}`);
+  // Simulate a delay (e.g., 2 seconds)
+  await new Promise((resolve) => setTimeout(resolve, 2000));
 
-  if (!response.ok) {
-    throw new Error('Failed to fetch enhanced audio');
-  }
-
-  const data = await response.json();
-  return data.file_url; // Return the URL to download the enhanced audio
+  // Return a mock URL for the enhanced audio file
+  return 'https://example.com/enhanced-audio.mp3';
 };
 
 export default MicrophoneCircle;
