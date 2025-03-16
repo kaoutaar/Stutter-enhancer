@@ -1,17 +1,26 @@
-import React, { lazy, Suspense } from 'react';
-
-const EnhancedWindow = lazy(() => import('./EnhancedWindow'));
+import React from 'react';
+import EnhancedWindow from './EnhancedWindow';
 
 interface EnhancedViewProps {
-  audioBlob: Blob;
-  onReset: () => void;
+  vanillaAudioUrl: string; // URL of the original recorded audio
+  enhancedAudioUrl: string; // URL of the enhanced audio
+  onReset: () => void; // Callback to reset the app
+  vanillaAudioBlob?: Blob; // Audio blob for the Vanilla waveform
 }
 
-const EnhancedView: React.FC<EnhancedViewProps> = ({ audioBlob, onReset }) => {
+const EnhancedView: React.FC<EnhancedViewProps> = ({
+  vanillaAudioUrl,
+  enhancedAudioUrl,
+  onReset,
+  vanillaAudioBlob,
+}) => {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <EnhancedWindow audioBlob={audioBlob} onReset={onReset} />
-    </Suspense>
+    <EnhancedWindow
+      vanillaAudioUrl={vanillaAudioUrl}
+      enhancedAudioUrl={enhancedAudioUrl}
+      onReset={onReset}
+      vanillaAudioBlob={vanillaAudioBlob}
+    />
   );
 };
 

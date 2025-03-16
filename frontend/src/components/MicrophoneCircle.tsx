@@ -5,6 +5,7 @@ import RecordingView from './RecordingView';
 import ProcessingView from './ProcessingView';
 import TextboxView from './TextboxView';
 import EnhancedView from './EnhancedView';
+import ErrorMessage from './ErrorMessage';
 import '../App.css';
 
 const MicrophoneCircle: React.FC = () => {
@@ -19,22 +20,28 @@ const MicrophoneCircle: React.FC = () => {
     mediaRecorder,
   } = useAudioRecorder();
 
+  const [taskId, setTaskId] = useState<string | null>(null);
+  const [transcribedText, setTranscribedText] = useState<string>('');
+  const [vanillaAudioUrl, setVanillaAudioUrl] = useState<string | null>(null);
+  const [enhancedAudioUrl, setEnhancedAudioUrl] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [isProcessingComplete, setIsProcessingComplete] = useState(false);
   const [showAudioController, setShowAudioController] = useState(false);
-  const [textboxValue, setTextboxValue] = useState('');
   const [showEnhancedWindow, setShowEnhancedWindow] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Reset the app to its initial state
   const resetApp = () => {
-    stopRecording();
+    stopRecording(); // Stop any ongoing recording
     setIsUploading(false);
     setIsProcessingComplete(false);
     setShowAudioController(false);
-    setTextboxValue('');
+    setTranscribedText('');
     setShowEnhancedWindow(false);
-    setIsProcessing(false);
+    setTaskId(null);
+    setVanillaAudioUrl(null);
+    setEnhancedAudioUrl(null);
+    setError(null);
   };
 
   // Handle starting a new recording
@@ -45,24 +52,53 @@ const MicrophoneCircle: React.FC = () => {
   };
 
   // Handle upload from AudioControlBar
-  const handleUpload = (blob: Blob) => {
+  const handleUpload = async (blob: Blob, url: string) => {
     setIsUploading(true);
-    setTimeout(() => {
-      setIsUploading(false);
+    setError(null);
+
+    try {
+      // Step 1: Submit audio to the backend (stubbed)
+      const taskId = await submitAudio(blob);
+      setTaskId(taskId);
+
+      // Step 2: Poll for transcribed text (stubbed)
+      const text = await getTranscribedText(taskId);
+      setTranscribedText(text);
       setIsProcessingComplete(true);
-      populateTextbox();
-      console.log('Audio Blob:', blob);
-      console.log('Audio URL:', URL.createObjectURL(blob));
-    }, 2000);
+
+      // Set the vanilla audio URL to the Vercel Blob URL
+      setVanillaAudioUrl(url);
+    } catch (err) {
+      setError('Failed to process audio. Please try again.');
+      console.error(err);
+    } finally {
+      setIsUploading(false);
+    }
   };
 
-  // Handle submit button click
-  const handleSubmit = () => {
-    setIsProcessing(true);
-    setTimeout(() => {
-      setIsProcessing(false);
+  // Handle submit button click in TextboxView
+  const handleSubmitText = async (text: string) => {
+    if (!taskId) return;
+
+    setIsUploading(true);
+    setError(null);
+
+    try {
+      // Step 3: Submit corrected text to the backend (stubbed)
+      await submitCorrectedText(taskId, text);
+
+      // Step 4: Poll for enhanced audio (stubbed)
+      const enhancedAudioUrl = await getEnhancedAudio(taskId);
+
+      // Step 5: Set the enhanced audio URL
+      setEnhancedAudioUrl(enhancedAudioUrl);
       setShowEnhancedWindow(true);
-    }, 2000);
+    } catch (err) {
+      setError('Failed to enhance audio. Please try again.');
+      console.error(err);
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   // Handle small microphone circle click
@@ -72,35 +108,13 @@ const MicrophoneCircle: React.FC = () => {
     setShowAudioController(true);
   };
 
-  // Populate the textbox with random text
-  const populateTextbox = () => {
-    const romeoAndJulietText = `
-      Two households, both alike in dignity,
-      In fair Verona, where we lay our scene,
-      From ancient grudge break to new mutiny,
-      Where civil blood makes civil hands unclean.
-      From forth the fatal loins of these two foes
-      A pair of star-cross'd lovers take their life;
-      Whose misadventured piteous overthrows
-      Do with their death bury their parents' strife.
-      The fearful passage of their death-mark'd love,
-      And the continuance of their parents' rage,
-      Which, but their children's end, nought could remove,
-      Is now the two hours' traffic of our stage;
-      The which if you with patient ears attend,
-      What here shall miss, our toil shall strive to mend.
-    `;
-    const cleanedText = romeoAndJulietText.replace(/\s+/g, ' ').trim();
-    setTextboxValue(cleanedText);
-  };
-
   return (
     <div className="container">
       {/* Stutter Enhancer Title */}
       <StutterEnhancerTitle />
 
       {/* Recording View */}
-      {!isUploading && !isProcessingComplete && !showEnhancedWindow && (
+      {!isUploading && !isProcessingComplete && !showEnhancedWindow && !error && (
         <RecordingView
           isRecording={isRecording}
           showAudioController={showAudioController}
@@ -108,31 +122,72 @@ const MicrophoneCircle: React.FC = () => {
           recordingTime={recordingTime}
           isPaused={isPaused}
           onStartRecording={handleStartNewRecording}
-          onUpload={handleUpload}
+          onUpload={handleUpload} // Pass the updated handleUpload function
           onPauseResume={togglePauseResume}
-          onStop={stopRecording}
+          onStop={resetApp} // Pass resetApp to handle trashcan icon click
         />
       )}
 
       {/* Processing View */}
-      <ProcessingView isProcessing={isUploading || isProcessing} />
+      <ProcessingView isProcessing={isUploading} />
 
       {/* Textbox View */}
-      {isProcessingComplete && !showEnhancedWindow && (
+      {isProcessingComplete && !showEnhancedWindow && !error && (
         <TextboxView
-          textboxValue={textboxValue}
-          onTextboxChange={(e) => setTextboxValue(e.target.value)}
-          onSubmit={handleSubmit}
+          textboxValue={transcribedText}
+          onTextboxChange={(e) => setTranscribedText(e.target.value)}
+          onSubmit={() => handleSubmitText(transcribedText)}
           onMicrophoneClick={handleSmallMicrophoneClick}
         />
       )}
 
       {/* Enhanced View */}
-      {showEnhancedWindow && recordingBlob && (
-        <EnhancedView audioBlob={recordingBlob} onReset={resetApp} />
+      {showEnhancedWindow && vanillaAudioUrl && enhancedAudioUrl && (
+        <EnhancedView
+          vanillaAudioUrl={vanillaAudioUrl}
+          enhancedAudioUrl={enhancedAudioUrl}
+          onReset={resetApp}
+          vanillaAudioBlob={recordingBlob} // Pass the Vanilla audio blob
+        />
       )}
+
+      {/* Error Message */}
+      {error && <ErrorMessage message={error} onReset={resetApp} />}
     </div>
   );
+};
+
+// Stubbed API calls
+const submitAudio = async (_audioBlob: Blob): Promise<string> => {
+  // Simulate a delay (e.g., 2 seconds)
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+
+  // Return a mock task_id
+  return 'mock-task-id-12345';
+};
+
+const getTranscribedText = async (_taskId: string): Promise<string> => {
+  // Simulate a delay (e.g., 2 seconds)
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+
+  // Return mock transcribed text
+  return 'This is a mock transcription of the audio.';
+};
+
+const submitCorrectedText = async (_taskId: string, text: string): Promise<void> => {
+  // Simulate a delay (e.g., 2 seconds)
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+
+  // Simulate a successful response
+  console.log('Corrected text submitted:', text);
+};
+
+const getEnhancedAudio = async (_taskId: string): Promise<string> => {
+  // Simulate a delay (e.g., 2 seconds)
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+
+  // Return a mock URL for the enhanced audio file
+  return 'https://example.com/enhanced-audio.mp3';
 };
 
 export default MicrophoneCircle;

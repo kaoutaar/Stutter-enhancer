@@ -1,94 +1,102 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { FaPlay, FaPause, FaDownload } from 'react-icons/fa';
-import { AudioVisualizer } from 'react-audio-visualize';
 import { WhatsappShareButton, WhatsappIcon } from 'react-share';
+import { AudioVisualizer } from 'react-audio-visualize';
 import '../App.css';
 
 interface AudioPlayerProps {
-  audioBlob: Blob; // Audio blob to play (non-null)
+  audioUrl: string; // URL of the audio file
   title: string; // Title for the audio player
   align: 'left' | 'right'; // Alignment for positioning
+  audioBlob?: Blob; // Audio blob for the waveform
 }
 
-const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioBlob, title, align }) => {
-  const [isPlaying, setIsPlaying] = useState(false); // Track playback state
-  const audioRef = useRef<HTMLAudioElement>(null); // Reference to the audio element
-  const [audioUrl, setAudioUrl] = useState<string>(''); // Store the stable audio URL
-  const [currentTime, setCurrentTime] = useState(0); // Track current playback time
-  const [error, setError] = useState<string | null>(null); // Track errors
+const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioUrl, title, align, audioBlob }) => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState<number | null>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const waveformContainerRef = useRef<HTMLDivElement>(null); // Ref for the waveform container
+  const [waveformWidth, setWaveformWidth] = useState(400); // Default width
 
-  // Create a stable URL for the audio blob
-  useEffect(() => {
-    if (!audioBlob || audioBlob.size === 0) {
-      setError('Invalid audio blob. Please record audio again.');
-      return;
-    }
-
-    const url = URL.createObjectURL(audioBlob); // Create a URL for the blob
-    setAudioUrl(url); // Set the URL in state
-
-    // Clean up the URL when the component unmounts
-    return () => {
-      URL.revokeObjectURL(url); // Release the object URL to free up memory
-    };
-  }, [audioBlob]);
-
-  // Update current time during playback
+  // Update current time and duration
   useEffect(() => {
     const audio = audioRef.current;
     if (audio) {
       const updateTime = () => setCurrentTime(audio.currentTime);
-      const handleEnded = () => setIsPlaying(false); // Reset play/pause button when audio ends
+      const updateDuration = () => {
+        if (!isNaN(audio.duration) && isFinite(audio.duration)) {
+          setDuration(audio.duration);
+        }
+      };
 
+      const handleEnded = () => {
+        setIsPlaying(false);
+      };
+
+      audio.addEventListener('loadedmetadata', updateDuration);
       audio.addEventListener('timeupdate', updateTime);
       audio.addEventListener('ended', handleEnded);
 
       return () => {
+        audio.removeEventListener('loadedmetadata', updateDuration);
         audio.removeEventListener('timeupdate', updateTime);
         audio.removeEventListener('ended', handleEnded);
       };
     }
   }, []);
 
+  // Update waveform width based on container width
+  useEffect(() => {
+    const updateWaveformWidth = () => {
+      if (waveformContainerRef.current) {
+        const containerWidth = waveformContainerRef.current.offsetWidth;
+        // Scale the waveform width proportionally (e.g., 90% of container width)
+        setWaveformWidth(containerWidth * 0.9);
+      }
+    };
+
+    // Initial width calculation
+    updateWaveformWidth();
+
+    // Update width on window resize
+    window.addEventListener('resize', updateWaveformWidth);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('resize', updateWaveformWidth);
+    };
+  }, []);
+
   // Handle play/pause button click
   const handlePlayPause = () => {
     if (audioRef.current) {
       if (isPlaying) {
-        audioRef.current.pause(); // Pause playback
+        audioRef.current.pause();
       } else {
         audioRef.current.play().catch((error) => {
-          setError('Error playing audio. Please try Google Chrome or another browser.');
           console.error('Error playing audio:', error);
-        }); // Start playback
+        });
       }
-      setIsPlaying(!isPlaying); // Toggle playback state
+      setIsPlaying(!isPlaying);
     }
   };
 
   // Handle download button click
-  const handleDownload = async () => {
-    try {
-      // Convert the WebM blob to MP3
-      const mp3Blob = await convertWebmToMp3(audioBlob);
-      const url = URL.createObjectURL(mp3Blob); // Create a URL for the MP3 blob
-      const link = document.createElement('a'); // Create a temporary <a> element
-      link.href = url; // Use the stable audio URL
-      link.download = 'recording.mp3'; // Set the default file name
-      document.body.appendChild(link); // Append the link to the DOM
-      link.click(); // Programmatically click the link to trigger the download
-      document.body.removeChild(link); // Remove the link from the DOM
-      URL.revokeObjectURL(url); // Release the object URL to free up memory
-    } catch (error) {
-      setError('Failed to convert the audio to MP3. Please try again.');
-      console.error('Error converting audio:', error);
-    }
+  const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = audioUrl;
+    link.download = `${title.toLowerCase().replace(' ', '_')}.mp3`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
-  // Convert WebM to MP3 (dummy implementation)
-  const convertWebmToMp3 = async (webmBlob: Blob): Promise<Blob> => {
-    // In a real implementation, you would use a library like ffmpeg.js
-    // For now, we'll just return the original blob as a placeholder
-    return new Blob([webmBlob], { type: 'audio/mp3' });
+  // Format time (mm:ss)
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
 
   return (
@@ -96,26 +104,34 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioBlob, title, align }) =>
       {/* Title */}
       <h3>{title}</h3>
 
-      {/* Error Message */}
-      {error && <p className="error-message">{error}</p>}
-
-      {/* Audio element */}
-      <audio ref={audioRef} src={audioUrl} /> {/* Hidden audio element */}
+      {/* Timer */}
+      <div className="timer">
+        <span>{formatTime(currentTime)}</span>
+        {duration !== null && (
+          <>
+            <span>/</span>
+            <span>{formatTime(duration)}</span>
+          </>
+        )}
+      </div>
 
       {/* Waveform */}
-      {audioRef.current && (
-        <div className="waveform-container">
+      <div className="waveform-container" ref={waveformContainerRef}>
+        {audioBlob && (
           <AudioVisualizer
-            blob={audioBlob}
+            blob={audioBlob} // Pass the actual audio blob
             currentTime={currentTime}
-            width={400} // Width of the waveform
-            height={48} // Reduced height of the waveform
-            barWidth={3} // Width of each bar in the waveform
-            gap={1} // Gap between bars
-            barColor="#7c3aed" // Color of the waveform bars
+            width={waveformWidth} // Use dynamic width
+            height={48}
+            barWidth={3}
+            gap={1}
+            barColor="#7c3aed"
           />
-        </div>
-      )}
+        )}
+      </div>
+
+      {/* Audio element */}
+      <audio ref={audioRef} src={audioUrl} />
 
       {/* Buttons Container */}
       <div className="buttons-container">
@@ -131,12 +147,12 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioBlob, title, align }) =>
 
         {/* Share on WhatsApp Button */}
         <WhatsappShareButton
-          url={audioUrl} // URL of the audio file
-          title="Check out this enhanced audio!"
+          url={audioUrl}
+          title={`Check out this ${title.toLowerCase()}!`}
           separator=" "
           className="share-button"
         >
-          <WhatsappIcon size={32} round />
+          <WhatsappIcon size={40} round />
         </WhatsappShareButton>
       </div>
     </div>
