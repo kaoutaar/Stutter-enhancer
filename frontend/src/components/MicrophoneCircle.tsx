@@ -52,7 +52,7 @@ const MicrophoneCircle: React.FC = () => {
   };
 
   // Handle upload from AudioControlBar
-  const handleUpload = async (blob: Blob) => {
+  const handleUpload = async (blob: Blob, url: string) => {
     setIsUploading(true);
     setError(null);
 
@@ -65,6 +65,9 @@ const MicrophoneCircle: React.FC = () => {
       const text = await getTranscribedText(taskId);
       setTranscribedText(text);
       setIsProcessingComplete(true);
+
+      // Set the vanilla audio URL to the Vercel Blob URL
+      setVanillaAudioUrl(url);
     } catch (err) {
       setError('Failed to process audio. Please try again.');
       console.error(err);
@@ -87,9 +90,8 @@ const MicrophoneCircle: React.FC = () => {
       // Step 4: Poll for enhanced audio (stubbed)
       const enhancedAudioUrl = await getEnhancedAudio(taskId);
 
-      // Step 5: Set both Vanilla and Enhanced audio URLs
-      setVanillaAudioUrl(URL.createObjectURL(recordingBlob!)); // Vanilla audio (original recording)
-      setEnhancedAudioUrl(enhancedAudioUrl); // Enhanced audio (processed)
+      // Step 5: Set the enhanced audio URL
+      setEnhancedAudioUrl(enhancedAudioUrl);
       setShowEnhancedWindow(true);
     } catch (err) {
       setError('Failed to enhance audio. Please try again.');
@@ -120,7 +122,7 @@ const MicrophoneCircle: React.FC = () => {
           recordingTime={recordingTime}
           isPaused={isPaused}
           onStartRecording={handleStartNewRecording}
-          onUpload={handleUpload}
+          onUpload={handleUpload} // Pass the updated handleUpload function
           onPauseResume={togglePauseResume}
           onStop={resetApp} // Pass resetApp to handle trashcan icon click
         />

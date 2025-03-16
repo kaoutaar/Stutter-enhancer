@@ -9,7 +9,7 @@ interface RecordingViewProps {
   recordingTime: number;
   isPaused: boolean;
   onStartRecording: () => void;
-  onUpload: (blob: Blob) => void;
+  onUpload: (blob: Blob, url: string) => void; // Updated to accept two arguments
   onPauseResume: () => void;
   onStop: () => void;
 }
@@ -35,7 +35,7 @@ const RecordingView: React.FC<RecordingViewProps> = ({
           mediaRecorder={mediaRecorder}
           recordingTime={recordingTime}
           isPaused={isPaused}
-          onUpload={onUpload}
+          onUpload={onUpload} // Pass the updated onUpload function
           onPauseResume={onPauseResume}
           onStop={onStop}
         />

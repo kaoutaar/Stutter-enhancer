@@ -32,15 +32,15 @@ const EnhancedWindow: React.FC<EnhancedWindowProps> = ({
       <div className="audio-players-container">
         {/* Vanilla Audio Player (Higher, like a sent message) */}
         <AudioPlayer
-          audioUrl={vanillaAudioUrl}
+          audioUrl={vanillaAudioUrl} // Pass the Vanilla audio URL
           title="Vanilla Audio"
           align="right"
-          audioBlob={vanillaAudioBlob} // Pass the Vanilla audio blob
+          audioBlob={vanillaAudioBlob} // Pass the Vanilla audio blob for the waveform
         />
 
         {/* Enhanced Audio Player (Lower, like a received message) */}
         <AudioPlayer
-          audioUrl={enhancedAudioUrl}
+          audioUrl={enhancedAudioUrl} // Pass the Enhanced audio URL
           title="Enhanced Audio"
           align="left"
           // Do not pass audioBlob for Enhanced Audio (waveform will not be displayed)

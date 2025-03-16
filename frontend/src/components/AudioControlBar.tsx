@@ -8,7 +8,7 @@ interface AudioControlBarProps {
   mediaRecorder: MediaRecorder | undefined; // MediaRecorder instance
   recordingTime: number; // Current recording time
   isPaused: boolean; // Whether recording is paused
-  onUpload: (blob: Blob) => void; // Callback for upload
+  onUpload: (blob: Blob, url: string) => void; // Callback for upload (now includes URL)
   onPauseResume: () => void; // Callback for pause/resume
   onStop: () => void; // Callback for stop
 }
@@ -41,7 +41,7 @@ const AudioControlBar: React.FC<AudioControlBarProps> = ({
           });
 
           console.log('File uploaded successfully. URL:', url);
-          onUpload(blob); // Pass the blob to the parent component
+          onUpload(blob, url); // Pass both the blob and the URL to the parent component
         } catch (error) {
           console.error('Failed to upload file:', error);
           alert('Failed to upload audio. Please try again.');
