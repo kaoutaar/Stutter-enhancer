@@ -1,6 +1,7 @@
 import React from 'react';
 import { FaUpload, FaPause, FaTrash, FaPlay } from 'react-icons/fa';
 import { LiveAudioVisualizer } from 'react-audio-visualize';
+import { put } from '@vercel/blob'; // Import Vercel Blob SDK
 import '../App.css';
 
 interface AudioControlBarProps {
@@ -21,7 +22,7 @@ const AudioControlBar: React.FC<AudioControlBarProps> = ({
   onStop,
 }) => {
   // Handle upload button click
-  const handleUpload = () => {
+  const handleUpload = async () => {
     if (!mediaRecorder) {
       alert('No recording available. Please record audio first.'); // Warn the user
       return;
@@ -29,10 +30,22 @@ const AudioControlBar: React.FC<AudioControlBarProps> = ({
 
     // Stop recording and get the blob
     mediaRecorder.stop();
-    mediaRecorder.ondataavailable = (event) => {
+    mediaRecorder.ondataavailable = async (event) => {
       const blob = event.data;
       if (blob.size > 0) {
-        onUpload(blob); // Pass the blob to the parent component
+        try {
+          // Upload the audio file to Vercel Blob Storage
+          const { url } = await put('recording.mp3', blob, {
+            access: 'public', // Ensure the file is publicly accessible
+            token: "vercel_blob_rw_kVHzRbJeXjvIrtbg_QmrqHwt407Bki3KfSdQXD73mvtZ65V",
+          });
+
+          console.log('File uploaded successfully. URL:', url);
+          onUpload(blob); // Pass the blob to the parent component
+        } catch (error) {
+          console.error('Failed to upload file:', error);
+          alert('Failed to upload audio. Please try again.');
+        }
       } else {
         alert('Recording is empty. Please record audio first.'); // Warn the user
       }
@@ -43,7 +56,11 @@ const AudioControlBar: React.FC<AudioControlBarProps> = ({
     <div className="audio-control-bar">
       {/* Left Section (Upload Icon and Seconds) */}
       <div className="left-section">
-        <div className="icon-button" onClick={handleUpload}>
+        <div
+          className="icon-button"
+          onClick={handleUpload}
+          style={{ opacity: mediaRecorder ? 1 : 0.5, cursor: mediaRecorder ? 'pointer' : 'not-allowed' }}
+        >
           <FaUpload size={24} color="#4F46E5" />
         </div>
         <span>{formatTime(recordingTime)}</span>
