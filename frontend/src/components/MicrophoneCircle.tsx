@@ -156,7 +156,7 @@ const MicrophoneCircle: React.FC = () => {
 };
 
 // Stubbed API calls
-const submitAudio = async (audioBlob: Blob): Promise<string> => {
+const submitAudio = async (_audioBlob: Blob): Promise<string> => {
   // Simulate a delay (e.g., 2 seconds)
   await new Promise((resolve) => setTimeout(resolve, 2000));
 
@@ -164,7 +164,7 @@ const submitAudio = async (audioBlob: Blob): Promise<string> => {
   return 'mock-task-id-12345';
 };
 
-const getTranscribedText = async (taskId: string): Promise<string> => {
+const getTranscribedText = async (_taskId: string): Promise<string> => {
   // Simulate a delay (e.g., 2 seconds)
   await new Promise((resolve) => setTimeout(resolve, 2000));
 
@@ -172,7 +172,7 @@ const getTranscribedText = async (taskId: string): Promise<string> => {
   return 'This is a mock transcription of the audio.';
 };
 
-const submitCorrectedText = async (taskId: string, text: string): Promise<void> => {
+const submitCorrectedText = async (_taskId: string, text: string): Promise<void> => {
   // Simulate a delay (e.g., 2 seconds)
   await new Promise((resolve) => setTimeout(resolve, 2000));
 
@@ -180,7 +180,7 @@ const submitCorrectedText = async (taskId: string, text: string): Promise<void> 
   console.log('Corrected text submitted:', text);
 };
 
-const getEnhancedAudio = async (taskId: string): Promise<string> => {
+const getEnhancedAudio = async (_taskId: string): Promise<string> => {
   // Simulate a delay (e.g., 2 seconds)
   await new Promise((resolve) => setTimeout(resolve, 2000));
 
