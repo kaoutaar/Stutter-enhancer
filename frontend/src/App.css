@@ -334,6 +334,43 @@ textarea {
   align-self: flex-start; /* Align to the left */
 }
 
+/* Title */
+.audio-player h3 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #4f46e5; /* Purple color */
+  margin-bottom: 8px; /* Add spacing below the title */
+}
+
+/* Timer */
+.timer {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  color: #666; /* Gray color */
+  margin-bottom: 8px; /* Add spacing below the timer */
+}
+
+/* Share Button */
+.share-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px; /* Increase padding */
+  background-color: #25d366; /* WhatsApp green */
+  border: none;
+  border-radius: 50%; /* Circular button */
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.share-button:hover {
+  background-color: #128c7e; /* Darker WhatsApp green on hover */
+  transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
 /* Centered Microphone Button at the Bottom */
 .centered-microphone-button {
   position: absolute;

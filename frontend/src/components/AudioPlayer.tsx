@@ -131,7 +131,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioUrl, title, align, audio
           separator=" "
           className="share-button"
         >
-          <WhatsappIcon size={36} round /> {/* Resized to 20px */}
+          <WhatsappIcon size={40} round /> {/* Resized to 20px */}
         </WhatsappShareButton>
       </div>
     </div>
