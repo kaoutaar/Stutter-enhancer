@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { FaPlay, FaPause, FaDownload } from 'react-icons/fa';
 import { WhatsappShareButton, WhatsappIcon } from 'react-share';
 import { AudioVisualizer } from 'react-audio-visualize';
@@ -14,8 +14,10 @@ interface AudioPlayerProps {
 const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioUrl, title, align, audioBlob }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState<number | null>(null); // Use null to indicate unloaded duration
+  const [duration, setDuration] = useState<number | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const waveformContainerRef = useRef<HTMLDivElement>(null); // Ref for the waveform container
+  const [waveformWidth, setWaveformWidth] = useState(400); // Default width
 
   // Update current time and duration
   useEffect(() => {
@@ -24,27 +26,46 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioUrl, title, align, audio
       const updateTime = () => setCurrentTime(audio.currentTime);
       const updateDuration = () => {
         if (!isNaN(audio.duration) && isFinite(audio.duration)) {
-          setDuration(audio.duration); // Only set duration if it's a valid number
+          setDuration(audio.duration);
         }
       };
 
-      // Handle audio end
       const handleEnded = () => {
-        setIsPlaying(false); // Set isPlaying to false when the audio ends
+        setIsPlaying(false);
       };
 
-      // Wait for the audio metadata to load
       audio.addEventListener('loadedmetadata', updateDuration);
       audio.addEventListener('timeupdate', updateTime);
       audio.addEventListener('ended', handleEnded);
 
-      // Clean up event listeners
       return () => {
         audio.removeEventListener('loadedmetadata', updateDuration);
         audio.removeEventListener('timeupdate', updateTime);
         audio.removeEventListener('ended', handleEnded);
       };
     }
+  }, []);
+
+  // Update waveform width based on container width
+  useEffect(() => {
+    const updateWaveformWidth = () => {
+      if (waveformContainerRef.current) {
+        const containerWidth = waveformContainerRef.current.offsetWidth;
+        // Scale the waveform width proportionally (e.g., 90% of container width)
+        setWaveformWidth(containerWidth * 0.9);
+      }
+    };
+
+    // Initial width calculation
+    updateWaveformWidth();
+
+    // Update width on window resize
+    window.addEventListener('resize', updateWaveformWidth);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('resize', updateWaveformWidth);
+    };
   }, []);
 
   // Handle play/pause button click
@@ -65,7 +86,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioUrl, title, align, audio
   const handleDownload = () => {
     const link = document.createElement('a');
     link.href = audioUrl;
-    link.download = `${title.toLowerCase().replace(' ', '_')}.mp3`; // Dynamic file name
+    link.download = `${title.toLowerCase().replace(' ', '_')}.mp3`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -95,12 +116,12 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioUrl, title, align, audio
       </div>
 
       {/* Waveform */}
-      <div className="waveform-container">
+      <div className="waveform-container" ref={waveformContainerRef}>
         {audioBlob && (
           <AudioVisualizer
             blob={audioBlob} // Pass the actual audio blob
             currentTime={currentTime}
-            width={400}
+            width={waveformWidth} // Use dynamic width
             height={48}
             barWidth={3}
             gap={1}
@@ -131,7 +152,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioUrl, title, align, audio
           separator=" "
           className="share-button"
         >
-          <WhatsappIcon size={40} round /> {/* Resized to 20px */}
+          <WhatsappIcon size={40} round />
         </WhatsappShareButton>
       </div>
     </div>
