@@ -1,0 +1,179 @@
+/* Audio Player Container */
+.audio-player {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px;
+    background-color: #ffffff; /* White background */
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    margin: 16px 0;
+    height: auto;
+    position: relative;
+  }
+  
+  /* Sent Message Style (Vanilla Audio) */
+  .audio-player.right {
+    align-self: flex-end;
+    border-radius: 12px 12px 0 12px;
+    background-color: #e0e7ff; /* Light blue for Vanilla Audio */
+    color: #1e3a8a; /* Dark blue text for contrast */
+  }
+  
+  /* Received Message Style (Enhanced Audio) */
+  .audio-player.left {
+    align-self: flex-start;
+    border-radius: 12px 12px 12px 0;
+    background-color: #d1fae5; /* Light green for Enhanced Audio */
+    color: #065f46; /* Dark green text for contrast */
+  }
+  
+  /* Title */
+  .audio-player h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  /* Timer */
+  .timer {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+    color: inherit;
+    margin-bottom: 8px;
+  }
+  
+  /* Waveform Container */
+  .waveform-container {
+    flex: 1;
+    height: 48px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  /* Buttons Container */
+  .buttons-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  /* Play/Pause Button */
+  .play-pause-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    background-color: #7c3aed; /* Purple background */
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .play-pause-button:hover {
+    background-color: #6d28d9; /* Darker purple on hover */
+    transform: scale(1.05);
+  }
+  
+  /* Download Button */
+  .download-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    background-color: #10b981; /* Green background */
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .download-button:hover {
+    background-color: #059669; /* Darker green on hover */
+    transform: scale(1.05);
+  }
+  
+  /* Share Button */
+  .share-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background-color: #25d366; /* WhatsApp green */
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .share-button:hover {
+    background-color: #128c7e; /* Darker WhatsApp green on hover */
+    transform: scale(1.1);
+  }
+  
+  /* Color Picker Button */
+  .color-picker-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+  }
+  
+  .color-picker-button:hover {
+    background-color: #f3f4f6; /* Light gray on hover */
+  }
+  
+  /* Color Picker Popup */
+  .color-picker-popup {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    padding: 8px;
+    display: flex;
+    gap: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+  
+  /* Color Option */
+  .color-option {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: transform 0.2s ease;
+  }
+  
+  .color-option:hover {
+    transform: scale(1.1);
+  }
+  
+  /* Selected Color Option */
+  .color-option.selected {
+    border-color: #000000;
+  }

@@ -3,6 +3,7 @@ import { FaPlay, FaPause, FaDownload } from 'react-icons/fa';
 import { WhatsappShareButton, WhatsappIcon } from 'react-share';
 import { AudioVisualizer } from 'react-audio-visualize';
 import '../App.css';
+import './AudioPlayer.css';
 
 interface AudioPlayerProps {
   audioUrl: string; // URL of the audio file
