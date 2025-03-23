@@ -1,4 +1,16 @@
+import { useState } from 'react';
+import { FaGem } from 'react-icons/fa'; // Import the diamond icon
+
 const StutterEnhancerTitle = () => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleDiamondClick = () => {
+    // Display the message in a default browser popup
+    alert(
+      `Koki,\n\nYou mean the world to me 🌍, I will support you for as long as you show kindness to me.\n\nLet's keep making happy memories and solving our problems together!  \n\n~ Josh ~`
+    );
+  };
+
   return (
     <h1
       style={{
@@ -6,19 +18,35 @@ const StutterEnhancerTitle = () => {
         fontFamily: 'Arial, sans-serif',
         textAlign: 'center',
         textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
-        position: 'fixed', // Keeps the title fixed at the top
-        top: '0',          // Positions it at the top
-        left: '50%',       // Centers it horizontally
-        transform: 'translateX(-50%)', // Adjusts for perfect centering
-        width: '100%',     // Ensures it spans the full width
-        backgroundColor: 'white', // Optional: Add a background to make it stand out
-        padding: '10px 0', // Adds some padding for better spacing
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)', // Optional: Adds a subtle shadow
-        zIndex: 1000,      // Ensures it stays on top of other content
-        margin: '0',       // Removes default margin
+        position: 'fixed',
+        top: '0',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: '100%',
+        backgroundColor: 'white',
+        padding: '10px 0',
+        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+        zIndex: 1000,
+        margin: '0',
       }}
+      onMouseEnter={() => setIsHovered(true)} // Show diamond on hover
+      onMouseLeave={() => setIsHovered(false)} // Hide diamond on hover out
     >
       Stutter Enhancer
+      {isHovered && ( // Only show the diamond when hovered
+        <FaGem
+          style={{
+            position: 'absolute',
+            top: '10px',
+            right: '20px',
+            width: '24px', // Original size (24x24 pixels)
+            height: '24px', // Original size (24x24 pixels)
+            cursor: 'pointer',
+            color: '#00CED1', // Diamond-like color (light cyan)
+          }}
+          onClick={handleDiamondClick}
+        />
+      )}
     </h1>
   );
 };
