@@ -4,7 +4,7 @@ import { WhatsappShareButton, WhatsappIcon } from 'react-share';
 import { AudioVisualizer } from 'react-audio-visualize';
 import { saveAs } from 'file-saver'; // Import file-saver
 import '../App.css';
-import './AudioPlayer.css';
+import './styles/AudioPlayer.css';
 
 interface AudioPlayerProps {
   audioUrl: string; // URL of the audio file
