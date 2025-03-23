@@ -1,6 +1,7 @@
 import React from 'react';
 import AudioPlayer from './AudioPlayer';
 import '../App.css';
+import './styles/EnhancedWindow.css';
 import MicrophoneButton from './MicrophoneButton';
 
 interface EnhancedWindowProps {
