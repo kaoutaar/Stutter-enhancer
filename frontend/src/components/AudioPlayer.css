@@ -177,3 +177,22 @@
   .color-option.selected {
     border-color: #000000;
   }
+
+/* Share Link Button */
+.share-link-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  background-color: #3b82f6; /* Blue background */
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.share-link-button:hover {
+  background-color: #2563eb; /* Darker blue on hover */
+  transform: scale(1.05);
+}
