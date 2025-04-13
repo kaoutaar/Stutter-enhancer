@@ -1,0 +1,1 @@
+celery -A app.tasks.celery_config worker -Q default --loglevel=info

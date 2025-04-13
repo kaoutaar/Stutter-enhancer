@@ -1,0 +1,3 @@
+
+
+#docker run -d -it -p 9000:9000 -e MINIO_ACCESS_KEY=youraccesskey -e MINIO_SECRET_KEY=yoursecretkey --name minio -v miniovol:/ostorage minio/minio:RELEASE.2025-04-08T15-41-24Z server /ostorage
