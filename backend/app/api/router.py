@@ -5,11 +5,11 @@ from fastapi.responses import JSONResponse, StreamingResponse
 from io import BytesIO
 from typing import Annotated
 import uuid
-from db.session import get_db
-from app.service.minio_srv import *
-from schema.audio import AudioIn, AudioOut
-from schema.transcript import TranscriptIn, TranscriptOut
-from tasks.celery_tasks import *
+from ..db.session import get_db
+from ..service.minio_srv import *
+from ..schema.audio import AudioIn, AudioOut
+from ..schema.transcript import TranscriptIn, TranscriptOut
+from ..tasks.celery_tasks import *
 from celery.result import AsyncResult
 
 
@@ -138,7 +138,7 @@ async def submit_correct_text(
     except Exception as e:
         raise HTTPException(
             status_code=500,
-            detail=f"An error occurred while submitting the corrected text: {E}"
+            detail=f"An error occurred while submitting the corrected text: {e}"
         ) from e
 
 
@@ -162,10 +162,10 @@ async def get_enhanced_audio(task_id:str, file_id:str):
             )
         
         if state == "SUCCESS":
-            file = await get_file(file_id, stage="processed")
+            file = get_file(file_id, stage="processed")
             return StreamingResponse(
                 BytesIO(file),
-                media_type="audio/mpeg", 
+                media_type="audio/x-wav", 
                 status_code=200
             )
         

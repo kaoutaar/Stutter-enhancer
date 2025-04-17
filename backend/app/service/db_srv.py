@@ -1,4 +1,4 @@
-from app.db.models import RawAudio, ProcessedAudio
+from ..db.models import RawAudio, ProcessedAudio
 from sqlalchemy.orm import Session
 
 

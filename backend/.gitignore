@@ -10,9 +10,7 @@ whisper.txt
 a63e68fe.waptt.opus
 out.wav
 testapi.py
-main.py
 aud.wav
-celery_config.py
 tests
 zz.py
-OuteTTS-0.1-350M-Q8_0.gguf
+# OuteTTS-0.1-350M-Q8_0.gguf

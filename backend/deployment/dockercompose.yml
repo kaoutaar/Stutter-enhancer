@@ -1,0 +1,99 @@
+version: '3.9'
+
+networks:
+  ainet:
+    driver: bridge
+
+volumes:
+  minio-vol:
+  redis-vol:
+  db-vol:
+
+
+
+services:
+  web:
+    image: web
+    build:
+      context: ./backend/deployment
+      dockerfile: web.dockerfile
+    container_name: web
+    ports:
+     - "8000:8000"
+    env_file:
+      - .env
+    command: /bin/sh -c "poetry install && python /src/deployment/setup_db.py && python /src/deployment/setup_minio.py && /bin/sh /src/app/tasks/localworker.sh"
+    restart: on-failure
+    depends_on:
+      - minio
+    networks:
+      - ainet
+    volumes:
+      - db-vol:/volstorage
+      - ./backend:/src/ #share codebase
+
+
+
+  ai-service:
+    image: stts
+    build:
+      context: ./backend/deployment
+      dockerfile: ai.dockerfile
+    container_name: stts
+    env_file:
+      - .env
+    command: /bin/sh -c "poetry install && /bin/sh /src/app/tasks/aiworker.sh"
+    restart: on-failure
+    networks:
+      - ainet
+    volumes:
+      - ./backend:/src/ #share codebase
+      
+
+
+  redis:
+    image: redis:7.4.2
+    container_name: redis
+    restart: on-failure
+    ports:
+      - "6379:6379"
+    networks:
+      - ainet
+    volumes:
+      - redis-vol:/volstorage
+
+
+
+  minio:
+    image: minio/minio:RELEASE.2025-04-08T15-41-24Z
+    container_name: minio
+    restart: on-failure
+    expose: [9000]
+    environment:
+      - MINIO_ACCESS_KEY= ${MINIO_ACCESS_KEY}
+      - MINIO_SECRET_KEY= ${MINIO_SECRET_KEY}
+    command: "server /volstorage"
+    networks:
+      - ainet
+    volumes:
+      - minio-vol:/volstorage
+
+
+
+
+  # frontend:
+  #   image: yourimage
+  #   container_name: client
+  #   restart: on-failure
+  #   ports:
+  #     - x:x 
+
+  #   #...add otherconfigs
+
+  #   network:
+  #     - ainet
+  #   volume:
+  #     - yourvolumeifyouneedone
+
+
+#docker run -d -it -p 9000:9000 -e MINIO_ACCESS_KEY=youraccesskey -e MINIO_SECRET_KEY=yoursecretkey --name minio -v miniovol:/ostorage minio/minio:RELEASE.2025-04-08T15-41-24Z server /ostorage

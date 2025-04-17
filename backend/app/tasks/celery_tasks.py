@@ -1,8 +1,8 @@
 from celery_config import celery_app
-from service.db_srv import *
-from service.minio_srv import *
-from aicore.stt.whisperstt import *
-from aicore.tts.ttsclone import *
+from ..service.db_srv import *
+from ..service.minio_srv import *
+from ..aicore.stt.whisperstt import *
+from ..aicore.tts.ttsclone import *
 from mutagen import File
 from io import BytesIO
 
@@ -48,9 +48,3 @@ def text_to_speech(id, text, db):
     d = get_metadata(procfile)
     metadata.update(d)
     save_table(metadata=metadata, db=db, table="processed")
-    
-
-
-
-
-
