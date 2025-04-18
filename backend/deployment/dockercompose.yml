@@ -15,7 +15,7 @@ services:
   web:
     image: web
     build:
-      context: ./backend/deployment
+      context: .
       dockerfile: web.dockerfile
     container_name: web
     ports:
@@ -30,14 +30,14 @@ services:
       - ainet
     volumes:
       - db-vol:/volstorage
-      - ./backend:/src/ #share codebase
+      - ../:/src/ #share codebase
 
 
 
   ai-service:
     image: stts
     build:
-      context: ./backend/deployment
+      context: .
       dockerfile: ai.dockerfile
     container_name: stts
     env_file:
@@ -47,7 +47,7 @@ services:
     networks:
       - ainet
     volumes:
-      - ./backend:/src/ #share codebase
+      - ../:/src/ #share codebase
       
 
 
