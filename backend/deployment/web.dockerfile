@@ -1,6 +1,4 @@
-FROM python:3.12-alpine
-# USER root
+FROM python:3.12.8
 WORKDIR /src
-RUN pip install poetry
-# COPY source dest
-# CMD
+COPY req.txt /src/
+RUN pip install --no-cache-dir -r req.txt

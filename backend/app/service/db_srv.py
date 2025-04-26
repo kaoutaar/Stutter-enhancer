@@ -11,7 +11,7 @@ def save_table(metadata:dict, db:Session, table:str):
 
         db.add(record)
         db.commit()
-        db.refresh()
+        db.refresh(record)
 
     except Exception as e:
         db.rollback()

@@ -3,7 +3,9 @@ from minio.error import S3Error
 from dotenv import load_dotenv
 import os
 
+
 load_dotenv("./deployment/.env")
+
 url = os.getenv("MINIO_URL")
 key = os.getenv("MINIO_ACCESS_KEY")
 secret = os.getenv("MINIO_SECRET_KEY")

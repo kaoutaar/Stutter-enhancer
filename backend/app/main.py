@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.api import router
+from .api import router
 
 
 app = FastAPI(
@@ -11,8 +11,7 @@ app = FastAPI(
 # add routers
 app.include_router(router.router)
 
-
-#  uvicorn main:app --reload #externally
+#  uvicorn app.main:app --reload #in WD
 if __name__ =="__main__":
     import uvicorn
-    uvicorn.run("main:app", reload=True)
+    uvicorn.run("app.main:app", reload=True)

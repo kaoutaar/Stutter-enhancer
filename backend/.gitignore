@@ -12,4 +12,10 @@ testapi.py
 aud.wav
 tests
 zz.py
+testcel.py
+enhanced_audio.wav
+test.ipynb
+testtask.py
+.vscode
+launch.json
 # OuteTTS-0.1-350M-Q8_0.gguf

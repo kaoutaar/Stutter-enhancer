@@ -5,7 +5,7 @@ class TranscriptIn(BaseModel):
     id: str
     content: str
 
-class TranscriptOut(TranscriptIn):
+class TranscriptOut(BaseModel):
     id: str
     status: str
     message: str

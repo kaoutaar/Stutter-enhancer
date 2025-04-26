@@ -1,0 +1,14 @@
+outetts @ git+https://github.com/kaoutaar/OuteTTS.git@7a7126a8c28d6de95aa214be167c022e3bf513e2
+whispercpp @ git+https://github.com/stlukey/whispercpp.py@7af678159c29edb3bc2a51a72665073d58f2352f
+librosa==0.11.0
+fastapi==0.115.12
+sqlalchemy==2.0.40
+celery==5.5.1
+minio==7.2.15
+dotenv==0.9.9
+mutagen==1.47.0
+uvicorn==0.34.1
+redis==5.2.1
+python-multipart==0.0.20
+httpx==0.28.1
+psycopg2==2.9.10

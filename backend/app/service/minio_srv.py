@@ -7,12 +7,13 @@ from io import BytesIO
 
 
 load_dotenv("./deployment/.env")
+
 url = os.getenv("MINIO_URL")
 key = os.getenv("MINIO_ACCESS_KEY")
 secret = os.getenv("MINIO_SECRET_KEY")
 
 # Initialize MinIO client
-minio_client = Minio(url, access_key=key, secret_key=secret, secure=True)
+minio_client = Minio(url, access_key=key, secret_key=secret, secure=False)
 
 
 def get_file(id: str, stage: str):
@@ -36,7 +37,8 @@ def get_file(id: str, stage: str):
 
 
 
-def save_file(id: str, file: BytesIO, stage: str):
+def save_file(id: str, file: bytes, stage: str):
+    file =  BytesIO(file)
     try:
         if stage == "raw":
             response = minio_client.put_object(

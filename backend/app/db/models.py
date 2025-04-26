@@ -3,6 +3,7 @@ from .base import Base
 
 
 class RawAudio(Base):
+    __tablename__ = 'raw_audio'
     row_id = Column(Integer, primary_key=True, index=True)
     id = Column(String, index=True)
     transcript = Column(String, default="")
@@ -16,6 +17,7 @@ class RawAudio(Base):
 
 
 class ProcessedAudio(Base):
+    __tablename__ = 'processed_audio'
     row_id = Column(Integer, primary_key=True, index=True)
     id = Column(String, index=True)
     length = Column(Float, index=True)

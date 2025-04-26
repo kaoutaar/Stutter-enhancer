@@ -1,28 +1,31 @@
 from fastapi import APIRouter, HTTPException, Depends
-from sqlalchemy.orm import Session
-from fastapi import File, UploadFile
+from fastapi import File, UploadFile, Form, Query
 from fastapi.responses import JSONResponse, StreamingResponse
 from io import BytesIO
 from typing import Annotated
 import uuid
-from ..db.session import get_db
 from ..service.minio_srv import *
 from ..schema.audio import AudioIn, AudioOut
 from ..schema.transcript import TranscriptIn, TranscriptOut
 from ..tasks.celery_tasks import *
 from celery.result import AsyncResult
-
+import json
 
 
 
 router = APIRouter(prefix = "/enhance_audio")
 
 
+
+@router.get("/", tags=["audio"])
+async def get_home():
+    return "Home Page"
+
+
 @router.post("/", tags=["audio"])
 async def submit_raw_audio(
-    audiofile: Annotated[UploadFile, File(...)],
-    metadata: AudioIn,
-    db: Session=Depends(get_db)
+    audiofile: Annotated[bytes, File()],
+    metadata: str=Form()
 ):
     """
     Submits a raw audio file for processing, validates file type, and initiates the task chain for saving and transcribing the audio.
@@ -31,26 +34,22 @@ async def submit_raw_audio(
     - Creates a unique file ID and updates the metadata.
     - Initiates the task chain for processing the audio.
     """
-    if not audiofile.content_type.startswith("audio/"):
-        raise HTTPException(status_code=400, detail="Invalid file type. Only audio files are allowed.")
-    
-    file = await audiofile.read()
+
+    metadata = json.loads(metadata)
     file_id = str(uuid.uuid4())
-
     #chain tasks:
-    task_chain = save_raw_file.s(file_id, BytesIO(file)) | speech_to_text.s(file_id)
-    task = task_chain()
-
-    metadata = metadata.model_dump()
+    task_chain = save_raw_file.s(file_id, audiofile) | speech_to_text.s(id=file_id)
+    task = task_chain.apply_async()
     metadata.update({"id":file_id})
-    save_raw_table.delay(metadata, db)
+    print(metadata)
+    save_raw_table.delay(metadata)
 
-    return {"task_id":task.id, "status_url": f"/enhance-audio/text/{file_id}"}
+    return {"task_id":task.id, "file_id":file_id, "status_url": f"/enhance-audio/text/{file_id}"}
 
 
 
 @router.get("/text/{file_id}", tags=["audio"], response_model=TranscriptOut)
-async def get_stt_suggestion(task_id: str, file_id:str):
+async def get_stt_suggestion(file_id:str, task_id: str=Query()):
     """
     Retrieves the status and result of the STT task based on the task_id.
 
@@ -63,7 +62,7 @@ async def get_stt_suggestion(task_id: str, file_id:str):
         if state == "PENDING":
             return JSONResponse(
                 content={
-                    "id":task_id, 
+                    "id":file_id, 
                     "status": "Processing",
                     "message": "",
                     "transcript": ""
@@ -75,7 +74,7 @@ async def get_stt_suggestion(task_id: str, file_id:str):
             txt = result.result
             return JSONResponse(
                 content={
-                    "id":task_id, 
+                    "id":file_id, 
                     "status": "Success",
                     "message": "", 
                     "transcript": txt
@@ -86,7 +85,7 @@ async def get_stt_suggestion(task_id: str, file_id:str):
         if state == "FAILURE":
             return JSONResponse(
                 content={
-                    "id":task_id,
+                    "id":file_id,
                     "status": "Failed",
                     "message": str(result.result),
                     "transcript": ""
@@ -96,7 +95,7 @@ async def get_stt_suggestion(task_id: str, file_id:str):
         
         return JSONResponse(
             content={
-                "id": task_id, 
+                "id":file_id, 
                 "status": f"Unknown state: {state}",
                 "message": "",
                 "transcript": ""
@@ -115,8 +114,7 @@ async def get_stt_suggestion(task_id: str, file_id:str):
 @router.post("/text/{file_id}", tags=["audio"])
 async def submit_correct_text(
     file_id: str,
-    txt: str = TranscriptIn,
-    db: Session = Depends(get_db)
+    txt: str,
 ):
     """
     Submits the corrected text for a given file ID, triggers text update task, 
@@ -125,13 +123,12 @@ async def submit_correct_text(
     - Updates the transcript using the corrected text.
     - Initiates a text-to-speech task based on the corrected text.
     """
-    txt = txt.content
     try:
-        update_transcript.delay(file_id, txt, db)
-        task = celery_app.send_task("text_to_speech", args=[file_id, txt, db])
+        update_transcript.delay(file_id, txt)
+        task = celery_app.send_task("text_to_speech", args=[file_id, txt])
 
         return JSONResponse(
-            content = {"task_id":task.id, "status_url": f"/enhance-audio/audio/{file_id}"},
+            content = {"task_id":task.id, "file_id":file_id, "status_url": f"/enhance-audio/audio/{file_id}"},
             status_code=202
         )
     
@@ -144,7 +141,7 @@ async def submit_correct_text(
 
 
 @router.get("/audio/{file_id}", tags=["audio"])
-async def get_enhanced_audio(task_id:str, file_id:str):
+async def get_enhanced_audio(file_id: str, task_id: str=Query()):
     """
     Retrieves the enhanced audio file once the processing task has completed.
 

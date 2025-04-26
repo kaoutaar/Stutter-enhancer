@@ -1,4 +1,6 @@
 # setup_db.py
+import sys
+sys.path.append(".")
 from app.db.base import Base
 from app.db.session import engine
 

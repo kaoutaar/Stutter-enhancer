@@ -15,48 +15,68 @@ services:
   web:
     image: web
     build:
-      context: ./backend/deployment
+      context: .
       dockerfile: web.dockerfile
     container_name: web
-    ports:
-     - "8000:8000"
     env_file:
       - .env
-    command: /bin/sh -c "poetry install && python /src/deployment/setup_db.py && python /src/deployment/setup_minio.py && /bin/sh /src/app/tasks/localworker.sh"
+    ports:
+     - "8000:8000"
+    command: /bin/sh -c "python deployment/setup_db.py && python deployment/setup_minio.py && /bin/sh /src/app/tasks/localworker.sh"
     restart: on-failure
     depends_on:
       - minio
+      - redis
+      - postgres
     networks:
       - ainet
     volumes:
-      - db-vol:/volstorage
-      - ./backend:/src/ #share codebase
+      - ../:/src/ #share codebase
+
+
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres
+    environment:
+      POSTGRES_USER: ${DBUSER}
+      POSTGRES_PASSWORD: ${DBPASSWORD}
+      POSTGRES_DB: ${DB}
+    ports:
+      - "5432:5432"
+    restart: on-failure
+    networks:
+      - ainet
+    volumes:
+      - db-vol:/dbstorage
 
 
 
   ai-service:
     image: stts
     build:
-      context: ./backend/deployment
+      context: .
       dockerfile: ai.dockerfile
     container_name: stts
     env_file:
       - .env
-    command: /bin/sh -c "poetry install && /bin/sh /src/app/tasks/aiworker.sh"
+    command: /bin/sh -c "/bin/sh /src/app/tasks/aiworker.sh"
     restart: on-failure
+    depends_on:
+      - redis
     networks:
       - ainet
     volumes:
-      - ./backend:/src/ #share codebase
+      - ../:/src/ #share codebase
       
 
 
   redis:
     image: redis:7.4.2
     container_name: redis
-    restart: on-failure
     ports:
       - "6379:6379"
+    restart: on-failure
     networks:
       - ainet
     volumes:
@@ -67,12 +87,14 @@ services:
   minio:
     image: minio/minio:RELEASE.2025-04-08T15-41-24Z
     container_name: minio
-    restart: on-failure
-    expose: [9000]
     environment:
-      - MINIO_ACCESS_KEY= ${MINIO_ACCESS_KEY}
-      - MINIO_SECRET_KEY= ${MINIO_SECRET_KEY}
-    command: "server /volstorage"
+      - MINIO_ROOT_USER= ${MINIO_ACCESS_KEY}
+      - MINIO_ROOT_PASSWORD= ${MINIO_SECRET_KEY}
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    command: server /volstorage --console-address :9001
+    restart: on-failure
     networks:
       - ainet
     volumes:
@@ -96,4 +118,4 @@ services:
   #     - yourvolumeifyouneedone
 
 
-#docker run -d -it -p 9000:9000 -e MINIO_ACCESS_KEY=youraccesskey -e MINIO_SECRET_KEY=yoursecretkey --name minio -v miniovol:/ostorage minio/minio:RELEASE.2025-04-08T15-41-24Z server /ostorage
+# docker run -d -it -p 9000:9000 -e MINIO_ROOT_USER=youraccesskey -e MINIO_ROOT_PASSWORD=yoursecretkey --name minio -v miniovol:/ostorage minio/minio:RELEASE.2025-04-08T15-41-24Z server /ostorage
