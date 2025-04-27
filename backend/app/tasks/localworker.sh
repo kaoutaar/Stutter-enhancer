@@ -1,1 +1,1 @@
-celery -A app.celery_config worker --loglevel=info
+celery -A app.celery_config worker --loglevel=info -P threads

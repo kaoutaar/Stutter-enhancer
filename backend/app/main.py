@@ -12,6 +12,7 @@ app = FastAPI(
 app.include_router(router.router)
 
 #  uvicorn app.main:app --reload #in WD
+# uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 if __name__ =="__main__":
     import uvicorn
     uvicorn.run("app.main:app", reload=True)

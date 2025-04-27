@@ -5,15 +5,15 @@ from dotenv import load_dotenv
 import os
 
 
-load_dotenv("./deploymnent/.env")
+load_dotenv("./deployment/.env")
 
-username = os.getenv("DBUSER")
-password = os.getenv("DBPASSWORD")
-url = os.getenv("DBURL")
-db = os.getenv("DB")
-
+DBURL = os.getenv("DBURL")
+DB_USER = os.getenv("POSTGRESQL_USERNAME")
+DB_PASSWORD = os.getenv("POSTGRESQL_PASSWORD")
+DB_NAME = os.getenv("POSTGRESQL_DATABASE")
 # Format: dialect+driver://username:password@host:port/database
-DB_URL = f"postgresql://{username}:{password}@{url}/{db}"
+DB_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DBURL}/{DB_NAME}"
+
 engine = create_engine(DB_URL, echo=True)
 
 SessionLocal = sessionmaker(bind = engine, autocommit=False, autoflush=False)
