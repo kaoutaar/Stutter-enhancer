@@ -21,7 +21,7 @@ const encodeWAV = (samples: Float32Array, numChannels: number, sampleRate: numbe
   const buffer = new ArrayBuffer(44 + dataSize);
   const view = new DataView(buffer);
 
-  // Write WAV header
+  // WAV conversion, but should be done in backend
   const writeString = (view: DataView, offset: number, str: string) => {
     for (let i = 0; i < str.length; i++) {
       view.setUint8(offset + i, str.charCodeAt(i));
@@ -155,13 +155,9 @@ const MicrophoneCircle: React.FC = () => {
         try {
           const response = await fetch(`${API_BASE_URL}/enhance_audio/text/${fileId}?task_id=${taskId}`);
           
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-
           const data = await response.json();
           
-          if (data.status === "Success" || data.status === "completed") {
+          if (data.status === "Success") {
             if (data.transcript) {
               resolve(data.transcript);
             } else {
@@ -214,7 +210,7 @@ const MicrophoneCircle: React.FC = () => {
   };
   
   const pollEnhancedAudio = async (taskId: string, fileId: string): Promise<string> => {
-    const maxAttempts = 60; // 2 minutes (60 attempts × 2 seconds)
+    const maxAttempts = 600; 
     let attempts = 0;
     
     while (attempts < maxAttempts) {
@@ -239,17 +235,11 @@ const MicrophoneCircle: React.FC = () => {
         
         if (contentType?.includes('application/json')) {
           const result = await response.json();
-          
-          if (result.status === 'SUCCESS') {
-            // If status is success but we got JSON, try again to get audio
+          if (result.status === 'Processing' || result.status === 'STARTED') {
             await new Promise(resolve => setTimeout(resolve, 2000));
             attempts++;
             continue;
-          } else if (result.status === 'PENDING' || result.status === 'STARTED') {
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            attempts++;
-            continue;
-          } else if (result.status === 'FAILURE') {
+          } else if (result.status === 'Failed') {
             throw new Error(result.message || 'Audio enhancement failed');
           }
         } else if (contentType?.includes('audio/')) {
