@@ -1,6 +1,6 @@
 # 🗣️ Stutter Enhancer - AI-Powered Speech Fluency System
 
-write something here
+An AI-powered application designed to convert raw, stuttered audio into fluent and clear speec
 
 ---
 
