@@ -9,6 +9,7 @@ interface EnhancedWindowProps {
   enhancedAudioUrl: string; // URL of the enhanced audio
   onReset: () => void; // Callback to reset the app
   vanillaAudioBlob?: Blob; // Audio blob for the Vanilla waveform
+  enhancedAudioBlob?:Blob; // Audio blob for the Enhanced waveform
 }
 
 const EnhancedWindow: React.FC<EnhancedWindowProps> = ({
@@ -16,6 +17,7 @@ const EnhancedWindow: React.FC<EnhancedWindowProps> = ({
   enhancedAudioUrl,
   onReset,
   vanillaAudioBlob,
+  enhancedAudioBlob,
 }) => {
   // Handle small microphone button click
   const handleMicrophoneClick = () => {
@@ -44,7 +46,7 @@ const EnhancedWindow: React.FC<EnhancedWindowProps> = ({
           audioUrl={enhancedAudioUrl} // Pass the Enhanced audio URL
           title="Enhanced Audio"
           align="left"
-          // Do not pass audioBlob for Enhanced Audio (waveform will not be displayed)
+          audioBlob={enhancedAudioBlob}
         />
       </div>
 

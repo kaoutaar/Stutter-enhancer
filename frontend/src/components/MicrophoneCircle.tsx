@@ -93,6 +93,7 @@ const MicrophoneCircle: React.FC = () => {
   const [transcribedText, setTranscribedText] = useState<string>('');
   const [vanillaAudioUrl, setVanillaAudioUrl] = useState<string | null>(null);
   const [enhancedAudioUrl, setEnhancedAudioUrl] = useState<string | null>(null);
+  const [enhancedAudioBlob, setEnhancedAudioBlob] = useState<Blob | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [isProcessingComplete, setIsProcessingComplete] = useState(false);
   const [showAudioController, setShowAudioController] = useState(false);
@@ -110,6 +111,7 @@ const MicrophoneCircle: React.FC = () => {
     setFileId(null);
     setVanillaAudioUrl(null);
     setEnhancedAudioUrl(null);
+    setEnhancedAudioBlob(null);
     setError(null);
   };
 
@@ -216,7 +218,7 @@ const MicrophoneCircle: React.FC = () => {
     }
   };
   
-  const pollEnhancedAudio = async (taskId: string, fileId: string): Promise<string> => {
+  const pollEnhancedAudio = async (taskId: string, fileId: string): Promise<{url: string, blob: Blob}> => {
     const maxAttempts = 600; 
     let attempts = 0;
     
@@ -251,7 +253,10 @@ const MicrophoneCircle: React.FC = () => {
           }
         } else if (contentType?.includes('audio/')) {
           const audioBlob = await response.blob();
-          return URL.createObjectURL(audioBlob);
+          return {
+            url: URL.createObjectURL(audioBlob),
+            blob: audioBlob
+          };
         } else {
           throw new Error(`Unexpected content type: ${contentType}`);
         }
@@ -309,16 +314,16 @@ const MicrophoneCircle: React.FC = () => {
     setIsUploading(true);
     setError(null);
 
-  
     try {
       // Submit the corrected text
       const enhancedTaskId = await submitCorrectedText(taskId, fileId, trimmedText);
       
       // Poll for enhanced audio
-      const enhancedUrl = await pollEnhancedAudio(enhancedTaskId, fileId);
+      const { url, blob } = await pollEnhancedAudio(enhancedTaskId, fileId);
       
       // Success
-      setEnhancedAudioUrl(enhancedUrl);
+      setEnhancedAudioUrl(url);
+      setEnhancedAudioBlob(blob);
       setShowEnhancedWindow(true);
     } catch (err) {
       setError(
@@ -375,12 +380,13 @@ const MicrophoneCircle: React.FC = () => {
         />
       )}
 
-      {showEnhancedWindow && vanillaAudioUrl && enhancedAudioUrl && (
+      {showEnhancedWindow && vanillaAudioUrl && enhancedAudioUrl && enhancedAudioBlob &&  (
         <EnhancedView
           vanillaAudioUrl={vanillaAudioUrl}
           enhancedAudioUrl={enhancedAudioUrl}
           onReset={resetApp}
           vanillaAudioBlob={recordingBlob}
+          enhancedAudioBlob={enhancedAudioBlob}
         />
       )}
 

@@ -6,6 +6,7 @@ interface EnhancedViewProps {
   enhancedAudioUrl: string; // URL of the enhanced audio
   onReset: () => void; // Callback to reset the app
   vanillaAudioBlob?: Blob; // Audio blob for the Vanilla waveform
+  enhancedAudioBlob?: Blob; // Audio blob for the Enhanced waveform
 }
 
 const EnhancedView: React.FC<EnhancedViewProps> = ({
@@ -13,6 +14,7 @@ const EnhancedView: React.FC<EnhancedViewProps> = ({
   enhancedAudioUrl,
   onReset,
   vanillaAudioBlob,
+  enhancedAudioBlob,
 }) => {
   return (
     <EnhancedWindow
@@ -20,6 +22,7 @@ const EnhancedView: React.FC<EnhancedViewProps> = ({
       enhancedAudioUrl={enhancedAudioUrl}
       onReset={onReset}
       vanillaAudioBlob={vanillaAudioBlob}
+      enhancedAudioBlob={enhancedAudioBlob}
     />
   );
 };
