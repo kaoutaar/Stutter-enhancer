@@ -59,7 +59,7 @@ Ensure you have the following installed on your system:
 
     ```bash
     git clone <repository_url>
-    cd stutter-enhancer-app
+    cd stutter-enhancer-app/frontend
     ```
 
 2.  **Install Dependencies:**
