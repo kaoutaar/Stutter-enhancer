@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { FaPlay, FaPause, FaDownload, FaLink } from 'react-icons/fa'; // Use FaLink
-import { WhatsappShareButton, WhatsappIcon } from 'react-share';
 import { AudioVisualizer } from 'react-audio-visualize';
 import { saveAs } from 'file-saver'; // Import file-saver
 import '../App.css';
@@ -84,18 +83,6 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioUrl, title, align, audio
     }
   };
 
-  // Handle share link button click
-  const handleShareLink = () => {
-    navigator.clipboard.writeText(audioUrl) // Copy the audio URL to the clipboard
-      .then(() => {
-        alert('Link copied to clipboard!'); // Alert the user
-      })
-      .catch((error) => {
-        console.error('Failed to copy link:', error);
-        alert('Failed to copy link. Please try again.');
-      });
-  };
-
   // Handle download button click
   const handleDownload = () => {
     if (audioBlob) {
@@ -168,25 +155,10 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioUrl, title, align, audio
           {isPlaying ? <FaPause size={20} /> : <FaPlay size={20} />}
         </button>
 
-        {/* Share Link Button */}
-        <button className="share-link-button" onClick={handleShareLink}>
-          <FaLink size={20} /> {/* Use FaLink instead of FaShare */}
-        </button>
-
         {/* Download Button */}
         <button className="download-button" onClick={handleDownload}>
           <FaDownload size={20} />
         </button>
-
-        {/* Share on WhatsApp Button */}
-        <WhatsappShareButton
-          url={audioUrl}
-          title={`Check out this ${title.toLowerCase()}!`}
-          separator=" "
-          className="share-button"
-        >
-          <WhatsappIcon size={40} round />
-        </WhatsappShareButton>
       </div>
     </div>
   );
