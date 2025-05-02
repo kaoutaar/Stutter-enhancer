@@ -115,16 +115,18 @@ const MicrophoneCircle: React.FC = () => {
 
   const submitAudio = async (audioBlob: Blob): Promise<{taskId: string, fileId: string}> => {
     const formData = new FormData();
+    const dateTimeString = new Date().toISOString();
+    let wavBlob: Blob;
     
     try {
-      const wavBlob = await convertToWav(audioBlob);
-      formData.append('audiofile', wavBlob, 'recording.wav');
+      wavBlob = await convertToWav(audioBlob);
+      formData.append('audiofile', wavBlob, `recording_${dateTimeString}.wav`);
       
       const metadata = {
-        length: wavBlob.size / (16 * 1000 * 2),
+        length: recordingTime,
         format: 'wav',
         size: wavBlob.size / (1024 * 1024),
-        created_time: new Date().toISOString()
+        created_time: dateTimeString
       };
       
       formData.append('metadata', JSON.stringify(metadata));
@@ -140,9 +142,15 @@ const MicrophoneCircle: React.FC = () => {
 
       const data = await response.json();
       return { taskId: data.task_id, fileId: data.file_id };
-    } catch (err) {
-      console.error('Audio conversion/upload error:', err);
-      throw new Error('Failed to process audio file');
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Error processing audio:', error.message);
+        throw error; 
+      }    
+      else {
+        console.error('Unknown error processing audio', error);
+        throw new Error('Failed to process audio file');
+      }
     }
   };
 
@@ -203,8 +211,7 @@ const MicrophoneCircle: React.FC = () => {
   
       const data = await response.json();
       return data.task_id;
-    } catch (err) {
-      console.error('Submission error:', err);
+    } catch (error) {
       throw new Error('Failed to submit corrected text');
     }
   };
@@ -248,9 +255,9 @@ const MicrophoneCircle: React.FC = () => {
         } else {
           throw new Error(`Unexpected content type: ${contentType}`);
         }
-      } catch (err) {
-        if (!(err instanceof Error && err.message.includes('400'))) {
-          console.error('Polling error:', err);
+      } catch (error) {
+        if (!(error instanceof Error && error.message.includes('400'))) {
+          console.error('Polling error:', error);
         }
         
         if (attempts >= maxAttempts - 1) {
@@ -277,7 +284,7 @@ const MicrophoneCircle: React.FC = () => {
       setFileId(fileId);
 
       const text = await pollTranscription(taskId, fileId);
-      setTranscribedText(text);
+      setTranscribedText(String(text).trim());
       setIsProcessingComplete(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error occurred');
@@ -293,7 +300,7 @@ const MicrophoneCircle: React.FC = () => {
       return;
     }
   
-    const trimmedText = text;
+    const trimmedText = String(text).trim();
     if (!trimmedText) {
       setError('Please enter valid text');
       return;
