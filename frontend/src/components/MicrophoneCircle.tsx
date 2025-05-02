@@ -219,58 +219,79 @@ const MicrophoneCircle: React.FC = () => {
   };
   
   const pollEnhancedAudio = async (taskId: string, fileId: string): Promise<{url: string, blob: Blob}> => {
-    const maxAttempts = 600; 
+    const maxAttempts = 600;
+    const maxServerErrors = 5;
     let attempts = 0;
+    let serverErrorCount = 0;
     
     while (attempts < maxAttempts) {
-      try {
-        const baseUrl = API_BASE_URL.replace(/\/$/, '');
-        const url = `${baseUrl}/enhance_audio/audio/${fileId}?task_id=${taskId}`;
-        
-        const response = await fetch(url);
-        
-        // Check if response is JSON (status update) or audio (success)
-        const contentType = response.headers.get('content-type');
-        
-        if (!response.ok) {
-          // Handle 400 errors silently during polling
-          if (response.status === 400) {
+        try {
+            const baseUrl = API_BASE_URL.replace(/\/$/, '');
+            const url = `${baseUrl}/enhance_audio/audio/${fileId}?task_id=${taskId}`;
+            
+            const response = await fetch(url);
+            
+            const contentType = response.headers.get('content-type');
+            
+            if (!response.ok) {
+                // Handle server errors (500 range)
+                if (response.status >= 500) {
+                    serverErrorCount++;
+                    if (serverErrorCount >= maxServerErrors) {
+                        throw new Error('Too many server errors, stopping retries');
+                    }
+                    // Continue with the retry logic below
+                }
+                // Handle 400 errors separately
+                else if (response.status === 400) {
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    attempts++;
+                    continue;
+                }
+                
+                // For all other errors, throw normally
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            
+            // Reset server error count on successful request
+            serverErrorCount = 0;
+            
+            if (contentType?.includes('application/json')) {
+                const result = await response.json();
+                if (result.status === 'Processing' || result.status === 'STARTED') {
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    attempts++;
+                    continue;
+                } else if (result.status === 'Failed') {
+                    throw new Error(result.message || 'Audio enhancement failed');
+                }
+            } else if (contentType?.includes('audio/')) {
+                const audioBlob = await response.blob();
+                return {
+                    url: URL.createObjectURL(audioBlob),
+                    blob: audioBlob
+                };
+            } else {
+                throw new Error(`Unexpected content type: ${contentType}`);
+            }
+        } catch (error) {
+            // Check if this is our special "too many errors" case
+            if (error instanceof Error && error.message === 'Too many server errors, stopping retries') {
+                throw error;
+            }
+            
+            // Log all errors except 400s
+            if (!(error instanceof Error && error.message.includes('400'))) {
+                console.error('Polling error:', error);
+            }
+            
+            if (attempts >= maxAttempts - 1) {
+                throw new Error('Audio processing timeout');
+            }
+            
             await new Promise(resolve => setTimeout(resolve, 2000));
             attempts++;
-            continue;
-          }
-          throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        
-        if (contentType?.includes('application/json')) {
-          const result = await response.json();
-          if (result.status === 'Processing' || result.status === 'STARTED') {
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            attempts++;
-            continue;
-          } else if (result.status === 'Failed') {
-            throw new Error(result.message || 'Audio enhancement failed');
-          }
-        } else if (contentType?.includes('audio/')) {
-          const audioBlob = await response.blob();
-          return {
-            url: URL.createObjectURL(audioBlob),
-            blob: audioBlob
-          };
-        } else {
-          throw new Error(`Unexpected content type: ${contentType}`);
-        }
-      } catch (error) {
-        if (!(error instanceof Error && error.message.includes('400'))) {
-          console.error('Polling error:', error);
-        }
-        
-        if (attempts >= maxAttempts - 1) {
-          throw new Error('Audio processing timeout');
-        }
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        attempts++;
-      }
     }
     
     throw new Error('Audio processing took too long');
