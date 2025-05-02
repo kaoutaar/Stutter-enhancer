@@ -8,7 +8,7 @@ An AI-powered application designed to convert raw, stuttered audio into fluent a
 
 This project is developed and maintained by two primary contributors:
 
-- **Frontend Developer**: [Contributor Name]  
+- **Frontend Developer**: [@jsbloo]  
   The frontend developer is responsible for creating the user interface, implementing audio upload/download features, and integrating with the backend API. The frontend is built with modern technologies (such as React or Vue.js) for a seamless user experience.
 
 - **Backend Developer**: [@kaoutaar]  
