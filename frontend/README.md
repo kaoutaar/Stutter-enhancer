@@ -47,7 +47,7 @@ The frontend can be easily containerized and deployed using Docker.
     * Edit the transcribed text if needed.
     * Click submit to send corrections for enhancement.
 4.   **Polling:**
-        * The UI enteres a processing state, until the backend returns an ehanced audio.
+        * The UI enteres a processing state, until the backend returns an enhanced audio.
 
 5.  **Results:**
     * View a side-by-side comparison of original and enhanced audio.
