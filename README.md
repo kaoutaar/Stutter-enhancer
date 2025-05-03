@@ -6,7 +6,7 @@ An AI-powered application designed to convert raw, stuttered audio into fluent a
 
 ## 📺 Demo
 
-
+https://github.com/user-attachments/assets/6897d472-10ae-42ac-a5e1-4fd55f6c5d24
  
 ---
 
