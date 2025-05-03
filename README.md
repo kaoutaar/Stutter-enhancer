@@ -25,7 +25,7 @@ For detailed information on the **backend** and **frontend** components, please 
   This file contains the technical details of the backend setup, including instructions for running the servers, setting up Docker. It also outlines the AI models used, task processing flow, and system requirements.
 
 - **[Frontend README](./frontend/README.md)**:  
-  This file provides details on setting up the frontend, installing dependencies, and running the user interface. It includes instructions for how the frontend communicates with the backend to upload and process audio files.
+  This files serves as a concise guide for understanding, installing, using, and contributing to the Stutter Enhancer frontend application.
 
 ---
 
@@ -35,6 +35,10 @@ For detailed information on the **backend** and **frontend** components, please 
 - Implementation of user authentication with personalized data storage.
 - Extension of API capabilities to support detailed analytics and reporting.
 - Support for video processing, enabling the extraction of audio from video files.
+- Frontend -> Backend authentication.
+- Make frontend / api public.
+- Kubernetes deployment.
+- WhatsApp integration. 
 
 ---
 
