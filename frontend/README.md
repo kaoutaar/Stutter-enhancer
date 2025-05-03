@@ -61,7 +61,7 @@ The frontend can be easily containerized and deployed using Docker.
 * Sends audio to backend API for processing.
 * Handles transcription and enhancement.
 * Allows editing of transcript 
-* Provides a side-by-side comparison of original and enhanced audio, featuring audio visualization.
+* Provides a side-by-side comparison of original and enhanced audio.
 * Enables download of audio files
 
 ## Technical Components
