@@ -9,7 +9,7 @@ An AI-powered application designed to convert raw, stuttered audio into fluent a
 This project is developed and maintained by two primary contributors:
 
 - **Frontend Developer**: [@jsbloo](https://github.com/@jsbloo) </br>
-  The frontend developer focused on designing and implementing the UI, which facilitates the backend. The frontend app is built using modern web technologies: { React, Node.js, TypeScript, Vite } the frontend was designed to be as simple and intuitive as possible. The frontend app is containerized using Docker for easy deployment.
+  The frontend developer was responsible for designing and implementing a user interface that seamlessly integrates with the backend system. Built with modern web technologies—including React, Node.js, TypeScript, and Vite—the frontend application emphasizes simplicity and intuitive user experience. To streamline deployment, the application is containerized using Docker.
 
 
 - **Backend Developer**: [@kaoutaar](https://github.com/kaoutaar)  
