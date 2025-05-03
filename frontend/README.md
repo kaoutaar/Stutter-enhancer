@@ -74,52 +74,6 @@ The frontend can be easily containerized and deployed using Docker.
 * `EnhancedView`: Displays comparison of original vs enhanced audio.
 * `AudioPlayer`: Plays audio with waveform visualization, and playback controls.
 
-## How to Contribute
-
-Contributions are welcome! Please fork the repository and submit pull requests for any improvements or bug fixes.
-
-### Prerequisites
-
-Ensure you have Node.js (v14+) and npm installed on your system.
-
-### Dev Environment Setup Steps
-
-1.  **Clone the Repository:**
-
-    ```bash
-    git clone <repository_url>
-    cd stutter-enhancer-app/frontend
-    ```
-
-2.  **Install Dependencies:**
-
-    ```bash
-    npm install
-    ```
-    
-
-3.  **Start the Development Server (using Vite):**
-
-    ```bash
-    npm run dev
-    ```
-
-    This command will start the **Vite** development server. You should see output similar to this:
-
-    ```
-    > frontend@0.0.0 dev
-    > vite
-
-
-      VITE v6.3.1  ready in 243 ms
-
-      ➜  Local:    http://localhost:5173/
-      ➜  Network: use --host to expose
-      ➜  press h + enter to show help
-    ```
-
-    The application will typically be accessible at the `Local` address provided by Vite (e.g., `http://localhost:5173/`).
-
 ## Technical Dependencies
 
 The Stutter Enhancer uses the following libraries:
