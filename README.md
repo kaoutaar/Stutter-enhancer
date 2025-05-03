@@ -4,6 +4,12 @@ An AI-powered application designed to convert raw, stuttered audio into fluent a
 
 ---
 
+## 📺 Demo
+
+
+ 
+---
+
 ## 👨‍💻 Contributors
 
 This project is developed and maintained by two primary contributors:
@@ -26,6 +32,17 @@ For detailed information on the **backend** and **frontend** components, please 
 
 - **[Frontend README](./frontend/README.md)**:  
   This files serves as a concise guide for understanding, installing, using, and contributing to the Stutter Enhancer frontend application.
+
+---
+## 🪤 Pitfalls
+
+**Some potential pitfalls to be aware of**:
+
+* The app uses the Outetts model, which, while the only available option, is not very efficient.
+
+* It can be buggy at times, causing occasional performance issues.
+
+* The model also struggles with longer audio or text inputs.
 
 ---
 
