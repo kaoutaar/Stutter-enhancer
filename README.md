@@ -10,6 +10,24 @@ An AI-powered application designed to convert raw, stuttered audio into fluent a
  
 ---
 
+## ⚡ Quick start
+
+Launch the full backend 
+
+````bash
+docker-compose -f backend/deployment/dockercompose.yml up --build
+````
+Make sure all the containers are fully up then run the frontend
+
+````bash
+docker build -t frontend:1.0 frontend
+````
+
+````bash
+docker run -d -p 5173:5173 --net deployment_ainet --name frontend frontend:1.0
+````
+
+---
 ## 👨‍💻 Contributors
 
 This project is developed and maintained by two primary contributors:
