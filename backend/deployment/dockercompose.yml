@@ -99,22 +99,3 @@ services:
     volumes:
       - minio-vol:/volstorage
 
-
-
-
-  # frontend:
-  #   image: yourimage
-  #   container_name: client
-  #   restart: on-failure
-  #   ports:
-  #     - x:x 
-
-  #   #...add otherconfigs
-
-  #   network:
-  #     - ainet
-  #   volume:
-  #     - yourvolumeifyouneedone
-
-
-# docker run -d -it -p 9000:9000 -e MINIO_ROOT_USER=youraccesskey -e MINIO_ROOT_PASSWORD=yoursecretkey --name minio -v miniovol:/ostorage minio/minio:RELEASE.2025-04-08T15-41-24Z server /ostorage
