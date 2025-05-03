@@ -2,8 +2,8 @@ import React from 'react';
 import '../App.css';
 
 interface ErrorMessageProps {
-  message: string; // The error message to display
-  onReset: () => void; // Callback to reset the app
+  message: string; 
+  onReset: () => void; 
 }
 
 const ErrorMessage: React.FC<ErrorMessageProps> = ({ message, onReset }) => {

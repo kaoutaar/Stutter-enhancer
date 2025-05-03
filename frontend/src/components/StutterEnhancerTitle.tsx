@@ -7,7 +7,7 @@ const StutterEnhancerTitle = () => {
   const handleDiamondClick = () => {
     // Display the message in a default browser popup
     alert(
-      `Koki,\n\nYou mean the world to me 🌍, I will support you for as long as you show kindness to me.\n\nLet's keep making happy memories and solving our problems together!  \n\n~ Josh ~`
+      `From the stuttering community with love`
     );
   };
 
