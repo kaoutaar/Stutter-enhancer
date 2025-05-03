@@ -35,7 +35,8 @@ The frontend can be easily containerized and deployed using Docker.
 
 1.  **Recording:**
     * Click the microphone button to start recording.
-    * Use pause/resume buttons as needed.
+    * Speak into microphone
+    * Use pause/resume/delete buttons as needed.
     * Click upload when finished.
 
 2.  **Processing:**
