@@ -17,7 +17,7 @@ The Stutter Enhancer frontend is a single-page web application, developed using 
 The frontend can be easily containerized and deployed using Docker.
 
 1.  **Build the Docker Image:**
-    Navigate to the root of your project and run:
+    After cloning the repository, navigate to the root of your project and run:
     ```bash
     docker build -t frontend:<version> Stutter-enhancer/frontend
     ```
