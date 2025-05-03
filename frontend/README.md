@@ -114,7 +114,7 @@ Ensure you have Node.js (v14+) and npm installed on your system.
 
 The Stutter Enhancer uses the following libraries:
 
-* `react` (v17+)
+* `react` (v18)
 * `@vitejs/plugin-react`
 * `react-audio-voice-recorder`
 * `react-audio-visualize`
