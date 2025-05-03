@@ -12,6 +12,7 @@ This project is developed and maintained by two primary contributors:
   The frontend developer is responsible for creating the user interface, implementing audio upload/download features, and integrating with the backend API. The frontend is built with modern technologies (such as React or Vue.js) for a seamless user experience.
 
 - **Backend Developer**: [@kaoutaar](https://github.com/kaoutaar)
+
   The backend developer focuses on implementing the core processing logic, including integrating AI models for Speech-to-Text (STT) and Text-to-Speech (TTS), managing database operations, and handling asynchronous tasks. The backend is built with FastAPI, Celery, and PostgreSQL, and it is containerized using Docker for easy deployment.
 
 ---
