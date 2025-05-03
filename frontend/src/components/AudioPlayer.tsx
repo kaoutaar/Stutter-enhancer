@@ -1,15 +1,15 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { FaPlay, FaPause, FaDownload, FaLink } from 'react-icons/fa'; // Use FaLink
+import { FaPlay, FaPause, FaDownload } from 'react-icons/fa';
 import { AudioVisualizer } from 'react-audio-visualize';
-import { saveAs } from 'file-saver'; // Import file-saver
+import { saveAs } from 'file-saver';
 import '../App.css';
 import './styles/AudioPlayer.css';
 
 interface AudioPlayerProps {
-  audioUrl: string; // URL of the audio file
-  title: string; // Title for the audio player
-  align: 'left' | 'right'; // Alignment for positioning
-  audioBlob?: Blob; // Audio blob for the waveform
+  audioUrl: string; 
+  title: string; 
+  align: 'left' | 'right';
+  audioBlob?: Blob; 
 }
 
 const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioUrl, title, align, audioBlob }) => {
@@ -17,10 +17,9 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioUrl, title, align, audio
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState<number | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
-  const waveformContainerRef = useRef<HTMLDivElement>(null); // Ref for the waveform container
-  const [waveformWidth, setWaveformWidth] = useState(400); // Default width
+  const waveformContainerRef = useRef<HTMLDivElement>(null);
+  const [waveformWidth, setWaveformWidth] = useState(400);
 
-  // Update current time and duration
   useEffect(() => {
     const audio = audioRef.current;
     if (audio) {
@@ -47,29 +46,23 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioUrl, title, align, audio
     }
   }, []);
 
-  // Update waveform width based on container width
   useEffect(() => {
     const updateWaveformWidth = () => {
       if (waveformContainerRef.current) {
         const containerWidth = waveformContainerRef.current.offsetWidth;
-        // Scale the waveform width proportionally (e.g., 90% of container width)
         setWaveformWidth(containerWidth * 0.9);
       }
     };
 
-    // Initial width calculation
     updateWaveformWidth();
 
-    // Update width on window resize
     window.addEventListener('resize', updateWaveformWidth);
 
-    // Cleanup
     return () => {
       window.removeEventListener('resize', updateWaveformWidth);
     };
   }, []);
 
-  // Handle play/pause button click
   const handlePlayPause = () => {
     if (audioRef.current) {
       if (isPlaying) {
@@ -83,7 +76,6 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioUrl, title, align, audio
     }
   };
 
-  // Handle download button click
   const handleDownload = () => {
     if (audioBlob) {
       saveAs(audioBlob, `${title.toLowerCase().replace(' ', '_')}.mp3`); // Save the blob
@@ -92,7 +84,6 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioUrl, title, align, audio
     }
   };
 
-  // Handle waveform click to seek
   const handleWaveformClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (audioRef.current && waveformContainerRef.current) {
       const waveformRect = waveformContainerRef.current.getBoundingClientRect();
