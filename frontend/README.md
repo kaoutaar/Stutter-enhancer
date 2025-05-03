@@ -131,7 +131,3 @@ The Stutter Enhancer uses the following libraries:
 * `file-saver`
 * `react-icons`
 * `react-share`
-
-## License
-
-This project is licensed under the [MIT License](https://opensource.org/licenses/MIT) - see the `LICENSE` file for complete details.
