@@ -1,4 +1,12 @@
-# Stutter Enhancer Frontend
+# 🎤  Stutter Enhancer - AI-Powered Speech Fluency Frontend
+
+
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+![npm](https://img.shields.io/badge/npm-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-ready-blue)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 ## Overview
 
@@ -21,6 +29,30 @@ The frontend can be easily containerized and deployed using Docker.
     docker run -d -p 5173:5173 --net deployment_ainet --name frontend frontend:<version>
     ```
     Ensure the `deployment_ainet` network exists or adjust as needed. The app will be accessible at `http://localhost:5173`.
+
+
+## Usage Flow
+
+1.  **Recording:**
+    * Click the microphone button to start recording.
+    * Use pause/resume buttons as needed.
+    * Click upload when finished.
+
+2.  **Processing:**
+    * The app sends the recording to the backend.
+    * A loading state is shown during processing.
+    * Transcribed text is displayed when ready.
+
+3.  **Text Correction (Optional):**
+    * Edit the transcribed text if needed.
+    * Click submit to send corrections for enhancement.
+4.   **Polling:**
+    * The UI enteres a processing state, until the backend returns an ehanced audio.
+
+5.  **Results:**
+    * View a side-by-side comparison of original and enhanced audio.
+    * Play either version with waveform visualization.
+    * Download either vanilla or enhanced audio files
 
 ## Key Features
 
@@ -64,6 +96,7 @@ Ensure you have Node.js (v14+) and npm installed on your system.
     ```bash
     npm install
     ```
+    
 
 3.  **Start the Development Server (using Vite):**
 
@@ -86,29 +119,6 @@ Ensure you have Node.js (v14+) and npm installed on your system.
     ```
 
     The application will typically be accessible at the `Local` address provided by Vite (e.g., `http://localhost:5173/`).
-
-## Usage Flow
-
-1.  **Recording:**
-    * Click the microphone button to start recording.
-    * Use pause/resume buttons as needed.
-    * Click upload when finished.
-
-2.  **Processing:**
-    * The app sends the recording to the backend.
-    * A loading state is shown during processing.
-    * Transcribed text is displayed when ready.
-
-3.  **Text Correction (Optional):**
-    * Edit the transcribed text if needed.
-    * Click submit to send corrections for enhancement.
-4.   **Polling:**
-    * The UI enteres a processing state, until the backend returns an ehanced audio.
-
-5.  **Results:**
-    * View a side-by-side comparison of original and enhanced audio.
-    * Play either version with waveform visualization.
-    * Download either vanilla or enhanced audio files
 
 ## Technical Dependencies
 
