@@ -1,6 +1,4 @@
-# Stutter Enhancer App
-
-## Empowering Fluent Speech Through Recording and Enhancement
+# Stutter Enhancer Frontend
 
 ## Overview
 
@@ -26,12 +24,13 @@ The frontend can be easily containerized and deployed using Docker.
 
 ## Key Features
 
-* Records audio with pause/resume.
+* Records audio in browser, with pause/resume functionality.
 * Visualizes audio waveforms in real-time.
-* Sends audio to a backend API for processing.
+* Sends audio to backend API for processing.
 * Handles transcription and enhancement.
-* Provides a side-by-side comparison of original and enhanced audio.
-* Enables downloading of enhanced audio file
+* Allows editing of transcript 
+* Provides a side-by-side comparison of original and enhanced audio, featuring audio visualization.
+* Enables download of audio files
 
 ## Technical Components
 
@@ -39,9 +38,9 @@ The frontend can be easily containerized and deployed using Docker.
 
 * `MicrophoneCircle`: Manages recording state and API interactions.
 * `RecordingView`: Handles the recording interface with visualizer.
-* `TextboxView`: Allows text correction after transcription.
+* `TextboxView`: Allows text correction after transcription, and displays transcript.
 * `EnhancedView`: Displays comparison of original vs enhanced audio.
-* `AudioPlayer`: Plays audio with waveform visualization.
+* `AudioPlayer`: Plays audio with waveform visualization, and playback controls.
 
 ## How to Contribute
 
@@ -51,7 +50,7 @@ Contributions are welcome! Please fork the repository and submit pull requests f
 
 Ensure you have Node.js (v14+) and npm installed on your system.
 
-### Installation Steps
+### Dev Environment Setup Steps
 
 1.  **Clone the Repository:**
 
@@ -103,10 +102,13 @@ Ensure you have Node.js (v14+) and npm installed on your system.
 3.  **Text Correction (Optional):**
     * Edit the transcribed text if needed.
     * Click submit to send corrections for enhancement.
+4.   **Polling:**
+    * The UI enteres a processing state, until the backend returns an ehanced audio.
 
-4.  **Results:**
+5.  **Results:**
     * View a side-by-side comparison of original and enhanced audio.
     * Play either version with waveform visualization.
+    * Download either vanilla or enhanced audio files
 
 ## Technical Dependencies
 
