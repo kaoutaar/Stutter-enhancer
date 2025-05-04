@@ -8,7 +8,7 @@ import EnhancedView from './EnhancedView';
 import ErrorMessage from './ErrorMessage';
 import '../App.css';
 
-const API_BASE_URL = "/api" //TODO:vite proxy CORS should be handled in backend
+const API_BASE_URL = "http://localhost:8000"
 
 // Audio conversion utilities
 const encodeWAV = (samples: Float32Array, numChannels: number, sampleRate: number): ArrayBuffer => {
