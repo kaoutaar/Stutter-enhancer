@@ -32,7 +32,7 @@ textarea {
   justify-content: center;
   width: 30vmin;
   height: 30vmin;
-  background-color: #7c3aed; /* Purple background */
+  background-color: #962062; /* Purple background */
   border-radius: 50%; /* Makes it a circle */
   cursor: pointer; /* Indicates it's clickable */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
@@ -45,7 +45,7 @@ textarea {
   justify-content: center;
   width: 15vmin; /* Smaller size */
   height: 15vmin; /* Smaller size */
-  background-color: #7c3aed; /* Purple background */
+  background-color: #962062; /* Purple background */
   border-radius: 50%; /* Makes it a circle */
   cursor: pointer; /* Indicates it's clickable */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
@@ -87,7 +87,7 @@ textarea {
 
 /* Seconds Text */
 .left-section span {
-  color: #7c3aed; /* Purple color for the seconds text */
+  color: #962062; /* Purple color for the seconds text */
   font-size: 16px;
   font-weight: bold;
 }
@@ -145,7 +145,7 @@ textarea {
 /* Spinner */
 .spinner {
   border: 6px solid rgba(0, 0, 0, 0.1);
-  border-top: 6px solid #7c3aed;
+  border-top: 6px solid #962062;
   border-radius: 50%;
   width: 80px;
   height: 80px;
@@ -164,7 +164,7 @@ textarea {
 
 /* Processing Text */
 .loading-overlay p {
-  color: #7c3aed;
+  color: #962062;
   font-size: 32px;
   font-weight: bold;
 }
@@ -187,7 +187,7 @@ textarea {
   height: 100%; /* Take up the full height of the container */
   padding: 16px;
   font-size: 16px;
-  border: 2px solid #7c3aed; /* Purple border */
+  border: 2px solid #962062; /* Purple border */
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   resize: vertical; /* Allow vertical resizing */
@@ -205,7 +205,7 @@ textarea {
   font-size: 16px;
   font-weight: bold;
   color: white;
-  background-color: #7c3aed; /* Purple background */
+  background-color: #962062; /* Purple background */
   border: none;
   border-radius: 8px;
   cursor: pointer;

@@ -5,7 +5,7 @@ import '../App.css';
 interface MicrophoneButtonProps {
   onClick: () => void;
   size?: 'large' | 'small';
-  isRecording?: boolean; // Add isRecording prop for visual feedback
+  isRecording?: boolean; 
 }
 
 const MicrophoneButton: React.FC<MicrophoneButtonProps> = ({ onClick, size = 'large', isRecording = false }) => {

@@ -2,10 +2,11 @@ import React from 'react';
 import EnhancedWindow from './EnhancedWindow';
 
 interface EnhancedViewProps {
-  vanillaAudioUrl: string; // URL of the original recorded audio
-  enhancedAudioUrl: string; // URL of the enhanced audio
-  onReset: () => void; // Callback to reset the app
-  vanillaAudioBlob?: Blob; // Audio blob for the Vanilla waveform
+  vanillaAudioUrl: string; 
+  enhancedAudioUrl: string; 
+  onReset: () => void; 
+  vanillaAudioBlob?: Blob; 
+  enhancedAudioBlob?: Blob; 
 }
 
 const EnhancedView: React.FC<EnhancedViewProps> = ({
@@ -13,6 +14,7 @@ const EnhancedView: React.FC<EnhancedViewProps> = ({
   enhancedAudioUrl,
   onReset,
   vanillaAudioBlob,
+  enhancedAudioBlob,
 }) => {
   return (
     <EnhancedWindow
@@ -20,6 +22,7 @@ const EnhancedView: React.FC<EnhancedViewProps> = ({
       enhancedAudioUrl={enhancedAudioUrl}
       onReset={onReset}
       vanillaAudioBlob={vanillaAudioBlob}
+      enhancedAudioBlob={enhancedAudioBlob}
     />
   );
 };
