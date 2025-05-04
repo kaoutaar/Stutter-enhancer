@@ -13,7 +13,7 @@ celery_app = Celery(
 )
 celery_app.autodiscover_tasks(["app.tasks.celery_tasks"])
 
-celery_app.conf.update(task_track_started=True)
+# celery_app.conf.update(task_track_started=True)
 celery_app.conf.update(
     task_concurrency=4,  # each worker uses 4 threads to handle 4 tasks
     worker_prefetch_multiplier=1,  # Prefetching is the process of loading a batch of tasks into a worker’s memory before they are actually executed. ideally load the same number of threads a worker can have ;)
