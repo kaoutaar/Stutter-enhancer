@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+        - name: web
+          image: telos96/web:latest
+          ports:
+            - containerPort: 8000
+          command:
+            ["/bin/sh", "-c"]
+          args:
+            ["sleep 30 && (python deployment/setup_minio.py & /bin/sh app/tasks/localworker.sh & python deployment/setup_db.py & uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload)"]
+          envFrom:
+            - secretRef:
+                name: app-secrets
