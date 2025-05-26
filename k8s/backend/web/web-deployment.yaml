@@ -1,0 +1,36 @@
+apiVersion: apps/v1 #[I'm watching you <3 :D]
+kind: Deployment
+metadata:
+  name: web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+        - name: web
+          image: tobepushed
+          command: ["/bin/sh" , "-c"]
+          args: 
+            - "sleep 30 && (python deployment/setup_minio.py & /bin/sh /src/app/tasks/localworker.sh & python deployment/setup_db.py & uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload)"
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - secretRef:
+                name: secrets  # Name of your Secret
+          volumeMounts:
+            - name: data
+              mountPath: /src/
+      volumes:
+        - name: data
+          hostPath:
+            path: $home*/  # The absolute path of your local directory
+            type: Directory
+
+
+/home/users/josh/documents
